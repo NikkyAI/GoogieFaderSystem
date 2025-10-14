@@ -1,0 +1,21 @@
+{
+  "name": "googiefadersystem",
+  "references": [
+    "VRC.SDK3",
+    "VRC.SDKBase",
+    "UdonSharp.Runtime",
+    "com.texelsaur.common",
+    "VRC.Udon",
+    "com.texelsaur.misc",
+    "Unity.TextMeshPro"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "defineConstraints": [],
+  "optionalUnityReferences": [],
+  "noEngineReferences": false
+}

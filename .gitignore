@@ -62,3 +62,29 @@ crashlytics-build.properties
 Assets/PackageMakerWindowData.asset*
 .idea
 .vscode
+
+Assets/Mochie/
+
+Assets/Mochie.meta
+
+Assets/csc.rsp
+
+Assets/csc.rsp.meta
+
+Assets/SerializedUdonPrograms/
+
+Assets/TextMesh Pro/
+
+Assets/UdonSharp/
+
+Assets/UdonSharp.meta
+
+Assets/TextMesh Pro.meta
+
+Assets/XR/
+
+Assets/SerializedUdonPrograms.meta
+
+Assets/Scenes/
+
+Assets/Scenes.meta

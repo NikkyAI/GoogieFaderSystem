@@ -1,0 +1,26 @@
+{
+  "name": "googiefadersystem.Editor",
+  "references": [
+    "VRC.SDK3",
+    "VRC.SDK3.Editor",
+    "VRC.SDKBase",
+    "VRC.SDKBase.Editor",
+    "googiefadersystem",
+    "VRC.Udon.Editor",
+    "UdonSharp.Editor",
+    "VRC.Udon",
+    "UdonSharp.Lib",
+    "UdonSharp.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

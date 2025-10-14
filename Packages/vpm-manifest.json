@@ -1,1 +1,58 @@
-{"dependencies": {}, "locked": {}}
+{
+  "dependencies": {
+    "com.vrchat.core.vpm-resolver": {
+      "version": "0.1.29"
+    },
+    "com.texelsaur.common": {
+      "version": "1.6.1"
+    },
+    "com.texelsaur.access": {
+      "version": "1.2.3"
+    },
+    "com.vrchat.worlds": {
+      "version": "3.9.0"
+    },
+    "com.llealloo.audiolink": {
+      "version": "2.1.0"
+    },
+    "com.texelsaur.misc": {
+      "version": "1.0.5"
+    }
+  },
+  "locked": {
+    "com.vrchat.core.vpm-resolver": {
+      "version": "0.1.29",
+      "dependencies": {}
+    },
+    "com.texelsaur.common": {
+      "version": "1.6.1",
+      "dependencies": {}
+    },
+    "com.texelsaur.access": {
+      "version": "1.2.3",
+      "dependencies": {
+        "com.texelsaur.common": "^1.4.0"
+      }
+    },
+    "com.vrchat.worlds": {
+      "version": "3.9.0",
+      "dependencies": {
+        "com.vrchat.base": "3.9.0"
+      }
+    },
+    "com.vrchat.base": {
+      "version": "3.9.0",
+      "dependencies": {}
+    },
+    "com.llealloo.audiolink": {
+      "version": "2.1.0",
+      "dependencies": {}
+    },
+    "com.texelsaur.misc": {
+      "version": "1.0.5",
+      "dependencies": {
+        "com.texelsaur.common": "^1.0.0"
+      }
+    }
+  }
+}
