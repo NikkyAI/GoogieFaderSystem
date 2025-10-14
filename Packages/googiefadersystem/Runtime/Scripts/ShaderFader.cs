@@ -12,57 +12,79 @@ using VRC.Udon.Common.Interfaces;
 using VRC.Udon.Common;
 using VRC.Udon.Common.Enums;
 
+// ReSharper disable RedundantDefaultMemberInitializer
+
 // ReSharper disable SuggestVarOrType_SimpleTypes
 // ReSharper disable SuggestVarOrType_BuiltInTypes
 // ReSharper disable InvertIf
 // ReSharper disable CompareOfFloatsByEqualityOperator
 namespace GoogieFaderSystem
 {
-    public enum ShaderValueType
-    {
-        Float,
-        Vector4
-    };
+    // public enum ShaderValueType
+    // {
+    //     [InspectorName("Float")]
+    //     Float,
+    //     [InspectorName("Vector 4")]
+    //     Vector4
+    // };
 
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class ShaderFader : EventBase
     {
-        public ShaderValueType valueType = ShaderValueType.Float;
-        public int vectorIndex = 0;
         [SerializeField] public Material[] targetMaterials;
         [SerializeField] public string materialPropertyId;
 
-        [Tooltip(("Value for reset"))]
-        [SerializeField]
+        [Tooltip(("Value for reset"))] [SerializeField]
         public float defaultValue = 0; // Value for reset
 
-        [Tooltip(("minimum value"))]
-        [SerializeField]
-        public float valueMin = 0; // Default minimum value
+        [FormerlySerializedAs("valueMin")] [Tooltip(("minimum value"))] [SerializeField]
+        public float minValue = 0; // Default minimum value
 
-        [Tooltip(("maximum value"))]
-        [SerializeField]
-        public float valueMax = 1; // Default maximum value
-        
+        [FormerlySerializedAs("valueMax")] [Tooltip(("maximum value"))] [SerializeField]
+        public float maxValue = 1; // Default maximum value
+
         [Header("Value Smoothing")] // header
         [Tooltip(("smoothes out value updating, but can lower frames"))]
         public bool enableValueSmoothing = false;
-        [Tooltip("amount of frames to skip when smoothing the value, higher number == less load, but more choppy smoothing")]
+
+        [Tooltip(
+            "amount of frames to skip when smoothing the value, higher number == less load, but more choppy smoothing")]
         public int smoothUpdateInterval = 5;
+
         [Tooltip("rate at with the value moves towards new target a fixed duration")]
         public float smoothingRate = 0.15f;
-        
+
+        [Header("Curve")] // header
+        [Tooltip("If enabled, the curve below will be used to evaluate the slider value")]
+        [SerializeField]
+        protected bool useCurve;
+
+        [Tooltip("Requires \"Use Curve\" to be enabled. E.g. can be changed to be logarithmic for volume sliders.")]
+        [SerializeField]
+        protected AnimationCurve sliderCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
         [Header("Display & Labels")] // header
-        [SerializeField] public bool alwaysShowValue = false;
-        [Tooltip("What the slider value will be formated as.\n- 0.0 means it will always at least show one digit with one decimal point\n- 00 means it will fill always be formated as two digits with no decimal point")]
-        [SerializeField] private string valueDisplayFormat = "0.0";
+        [SerializeField]
+        public bool alwaysShowValue = false;
+
+        [Tooltip(
+            "What the slider value will be formated as.\n- 0.0 means it will always at least show one digit with one decimal point\n- 00 means it will fill always be formated as two digits with no decimal point")]
+        [SerializeField]
+        private string valueDisplayFormat = "0.0";
+
         [SerializeField] public string labelMain = "MAIN";
         [SerializeField] public string labelSub = "SUB";
+
+        [Header("Vector 4")] // header
+        [SerializeField]
+        private bool assignVectorComponent = false;
+
+        [SerializeField] public int vectorIndex = 0;
 
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
         // [SerializeField] 
-        private float _desktopDampening = 20;
+        private const float _desktopDampening = 20;
 
         [Header("Internals")] // header
         [Tooltip("ACL used to check who can use the fader")]
@@ -72,30 +94,40 @@ namespace GoogieFaderSystem
         [SerializeField] public GameObject leftHandCollider;
         [SerializeField] public GameObject rightHandCollider;
 
-        [SerializeField] MeshRenderer handleRenderer;
-
-        [SerializeField] GameObject leftLimiter;
-        [SerializeField] GameObject rightLimiter;
+        [SerializeField] private MeshRenderer handleRenderer;
+        [SerializeField] private GameObject leftLimiter;
+        [SerializeField] private GameObject rightLimiter;
 
         [Header("UI")] // header
-        [SerializeField] private TextMeshPro tmpLabelMain;
+        [SerializeField]
+        private TextMeshPro tmpLabelMain;
 
         [SerializeField] private TextMeshPro tmpLabelSub;
         [SerializeField] private TextMeshPro tmpLabelValue;
 
         [Header("External")] // header
-        [SerializeField] private UdonBehaviour externalBehaviour;
-        [SerializeField] private string externalFloat="";
-        [SerializeField] private string externalEvent="";
-        
+        [SerializeField]
+        private UdonBehaviour externalBehaviour;
+
+        [SerializeField] private string externalFloat = "";
+        [SerializeField] private string externalEvent = "";
+
         [Header("Debug")] // header
-        [SerializeField] public DebugLog debugLog;
+        [SerializeField]
+        public DebugLog debugLog;
         // [SerializeField] private DebugState debugState;
 
         [Header("State")] // header
-        [UdonSynced] // IMPORTANT, DO NOT DELETE
-        public float currentValue;
-        private Vector3 _sliderPosition;
+        [UdonSynced]
+        // IMPORTANT, DO NOT DELETE
+        private float syncedValueNormalized;
+
+        private float _lastSyncedValueNormalized = 0;
+
+        // value after smoothing and applying curve
+        private float localValue;
+
+        public float Value => localValue;
 
         private bool _isInitialized = false;
         private int _uid = 0;
@@ -109,7 +141,6 @@ namespace GoogieFaderSystem
         private GameObject _faderHandle;
         private Material[] _handleMat;
         private VRCPlayerApi _localPlayer;
-        private float _lastValue = 0;
 
         //[UdonSynced(UdonSyncMode.NotSynced)]
         private bool _isAuthorized = false; // should be set by whitelist and false by default
@@ -118,10 +149,17 @@ namespace GoogieFaderSystem
 
         private bool _isHeld = false;
 
-        public string key => $"{materialPropertyId}_{_uid}";
+        // Section: value smoothing
+        private float smoothingTargetNormalized;
+        private float smoothedCurrentNormalized;
+        private const float epsilon = 0.01f;
+        private bool valueInitialized = false;
+        private bool isSmoothing = false;
+
+        public string Key => $"{materialPropertyId}_{_uid}";
         public const int EVENT_UPdATE = 0;
         public const int EVENT_COUNT = 1;
-        
+
         protected override int EventCount => EVENT_COUNT;
 
         // public void _InternalUpdateDebugState()
@@ -146,10 +184,11 @@ namespace GoogieFaderSystem
         {
             _EnsureInit();
         }
+
         protected override void _Init()
         {
             _faderHandle = gameObject;
-            this._uid = gameObject.GetInstanceID();
+            _uid = gameObject.GetInstanceID();
             _localPlayer = Networking.LocalPlayer;
             _isDesktop = !_localPlayer.IsUserInVR();
             _leftLimit = leftLimiter.gameObject.transform.localPosition.x;
@@ -163,8 +202,8 @@ namespace GoogieFaderSystem
             _handleMat[0].DisableKeyword("_EMISSION");
             _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
 
-            smoothedCurrent = currentValue;
-            
+            smoothedCurrentNormalized = syncedValueNormalized;
+
             DisableInteractive = true;
             InteractionText = labelMain + " - " + labelSub;
 
@@ -233,7 +272,9 @@ namespace GoogieFaderSystem
         {
             if (!_isAuthorized) return;
 
-            currentValue = newValue;
+            float normalizedNewValue = Mathf.InverseLerp(minValue, maxValue, newValue);
+            // syncedValueNormalized = newValue;
+            syncedValueNormalized = normalizedNewValue;
             RequestSerialization();
             OnDeserialization();
         }
@@ -242,13 +283,23 @@ namespace GoogieFaderSystem
         {
             if (tmpLabelValue)
             {
-                if (_isDesktop)
+                var wasEnabled = tmpLabelValue.enabled;
+                if (alwaysShowValue)
                 {
-                    tmpLabelValue.enabled = alwaysShowValue || _isHeld;
+                    tmpLabelValue.enabled = true;
+                }
+                else if (_isDesktop)
+                {
+                    tmpLabelValue.enabled = _isHeld;
                 }
                 else
                 {
-                     tmpLabelValue.enabled = alwaysShowValue || (_leftGrabbed && _inLeftTrigger) || (_rightGrabbed && _inRightTrigger);
+                    tmpLabelValue.enabled = (_leftGrabbed && _inLeftTrigger) || (_rightGrabbed && _inRightTrigger);
+                }
+
+                if (!wasEnabled && tmpLabelValue.enabled)
+                {
+                    tmpLabelValue.text = localValue.ToString(valueDisplayFormat);
                 }
             }
         }
@@ -302,15 +353,16 @@ namespace GoogieFaderSystem
                 Networking.SetOwner(_localPlayer, _faderHandle);
             }
 
-            var offset = (valueMax - valueMin) * value / _desktopDampening;
+            // var offset = (maxValue - minValue) * value / _desktopDampening;
+            var offset = value / _desktopDampening;
+            // syncedValueNormalized = Mathf.Clamp(syncedValueNormalized + offset, minValue, maxValue);
+            syncedValueNormalized = Mathf.Clamp(syncedValueNormalized + offset, 0f, 1f);
 
-            currentValue = Mathf.Clamp(currentValue + offset, valueMin, valueMax);
-
-            if (currentValue != _lastValue)
+            if (syncedValueNormalized != _lastSyncedValueNormalized)
             {
                 RequestSerialization();
                 OnDeserialization();
-                _lastValue = currentValue;
+                _lastSyncedValueNormalized = syncedValueNormalized;
             }
         }
 
@@ -364,18 +416,14 @@ namespace GoogieFaderSystem
 
         public override void OnDeserialization()
         {
-            if (currentValue != _lastValue)
+            if (syncedValueNormalized != _lastSyncedValueNormalized)
             {
                 UpdatePositionToCurrentValue();
-                _UpdateTargetFloat(currentValue);
-                _lastValue = currentValue;
+                Log("OnDeserialization");
+                _UpdateTargetFloat(syncedValueNormalized);
+                _lastSyncedValueNormalized = syncedValueNormalized;
                 // UpdateFaderPosition();
             }
-        }
-
-        private void UpdateFaderPosition()
-        {
-            _faderHandle.transform.localPosition = _sliderPosition;
         }
 
         public void Update()
@@ -393,10 +441,11 @@ namespace GoogieFaderSystem
 
                 Transform handData = _inRightTrigger ? rightHandCollider.transform : leftHandCollider.transform;
 
-                var localHandPos = transform.parent.InverseTransformPoint(handData.position);//.worldToLocalMatrix.MultiplyVector();
+                var localHandPos =
+                    transform.parent.InverseTransformPoint(handData.position); //.worldToLocalMatrix.MultiplyVector();
                 // Log($"transform.position {localHandPos} {handData.localPosition}");
                 // var localHandPos = handData.localPosition;
-                
+
                 float handPosX = localHandPos.x;
                 float clampedPosX = Mathf.Clamp(handPosX, _leftLimit, _rightLimit); // Clamp position within limits
 
@@ -404,12 +453,12 @@ namespace GoogieFaderSystem
                 Vector3 newPos = _faderHandle.transform.localPosition;
                 newPos.x = clampedPosX;
                 // Vector3 newPos = new Vector3(
-                    // clampedPosX,
-                    // _faderHandle.transform.localPosition.y,
-                    // _faderHandle.transform.localPosition.z
+                // clampedPosX,
+                // _faderHandle.transform.localPosition.y,
+                // _faderHandle.transform.localPosition.z
                 // );
                 _faderHandle.transform.localPosition = newPos;
-                
+
                 // probably too expensive ...
                 // transform.worldToLocalMatrix.MultiplyVector(handData.position);
 
@@ -417,16 +466,18 @@ namespace GoogieFaderSystem
                 float normalizedValue = Mathf.InverseLerp(_leftLimit, _rightLimit, clampedPosX);
 
                 // Map the normalized value to the arbitrary range
-                currentValue = Mathf.Lerp(valueMin, valueMax, normalizedValue);
+                // syncedValueNormalized = Mathf.Lerp(minValue, maxValue, normalizedValue);
 
-                if (currentValue != _lastValue)
+                syncedValueNormalized = normalizedValue;
+
+                if (syncedValueNormalized != _lastSyncedValueNormalized)
                 {
                     // string grabbedText = inRightTrigger ? "Right" : "Left";
                     // this.Log($"Changing Value: {currentValue} Current Hand: {grabbedText}");
                     // _sliderPosition = _faderHandle.transform.localPosition;
                     RequestSerialization();
                     OnDeserialization();
-                    _lastValue = currentValue;
+                    _lastSyncedValueNormalized = syncedValueNormalized;
                 }
             }
         }
@@ -505,17 +556,88 @@ namespace GoogieFaderSystem
             UpdateValueDisplay();
         }
 
-        private float targetFloat;
-        private float smoothedCurrent;
-        private float epsilon;
-        private bool valueInitialized = false;
-        
-        private void _UpdateTargetFloat(float val)
+        private void _UpdateTargetFloat(float normalizedValue)
         {
-            Log($"UpdateTargetFloat {val}");
-            if (tmpLabelValue)
+            Log($"UpdateTargetFloat {normalizedValue}");
+            // if (tmpLabelValue)
+            // {
+            // tmpLabelValue.text = val.ToString(valueDisplayFormat);
+            // }
+
+            if (enableValueSmoothing && valueInitialized)
             {
-                tmpLabelValue.text = val.ToString(valueDisplayFormat);
+                smoothingTargetNormalized = normalizedValue;
+                if (!isSmoothing)
+                {
+                    // NOTE epsilon is now a const because value is always normalized
+                    // epsilon = (maxValue - minValue) / 100;
+                    isSmoothing = true;
+                    SmoothValueUpdate();
+                }
+            }
+            else
+            {
+                _AssignValue(normalizedValue);
+
+                valueInitialized = true;
+            }
+        }
+
+
+        public void SmoothValueUpdate()
+        {
+            Log($"UpdateLoop {smoothedCurrentNormalized} => {smoothingTargetNormalized}");
+            // smooth lerp smoothedCurrent to targetFloat
+
+            smoothedCurrentNormalized = Mathf.Lerp(
+                smoothingTargetNormalized,
+                smoothedCurrentNormalized,
+                Mathf.Exp(-smoothingRate * Time.deltaTime * smoothUpdateInterval)
+            );
+
+            if (Mathf.Abs(smoothingTargetNormalized - smoothedCurrentNormalized) <= epsilon)
+            {
+                smoothedCurrentNormalized = smoothingTargetNormalized;
+                Log(
+                    $"value {materialPropertyId} reached target {smoothingTargetNormalized.ToString(valueDisplayFormat)}");
+                isSmoothing = false;
+            }
+            else
+            {
+                this.SendCustomEventDelayedFrames(nameof(SmoothValueUpdate), smoothUpdateInterval,
+                    EventTiming.LateUpdate);
+            }
+
+            _AssignValue(smoothedCurrentNormalized);
+        }
+
+        private void _AssignValue(float normalizedValue)
+        {
+            localValue = Mathf.Lerp(
+                minValue,
+                maxValue,
+                useCurve ? sliderCurve.Evaluate(normalizedValue) : normalizedValue
+            );
+
+            Log($"_AssignValue {normalizedValue} => {localValue}");
+
+            if (tmpLabelValue && tmpLabelValue.isActiveAndEnabled)
+            {
+                tmpLabelValue.text = localValue.ToString(valueDisplayFormat);
+            }
+
+            foreach (Material targetMaterial in targetMaterials)
+            {
+                if (assignVectorComponent)
+                {
+                    Vector4 current = targetMaterial.GetVector(materialPropertyId);
+                    current[this.vectorIndex] = localValue;
+                    targetMaterial.SetVector(materialPropertyId, current);
+                }
+                else
+                {
+                    targetMaterial.SetFloat(materialPropertyId, localValue);
+                }
             }
 
             _UpdateHandlers(EVENT_UPdATE);
@@ -523,69 +645,12 @@ namespace GoogieFaderSystem
             {
                 if (externalFloat != "")
                 {
-                    externalBehaviour.SetProgramVariable(externalFloat, val);
+                    externalBehaviour.SetProgramVariable(externalFloat, localValue);
                 }
+
                 if (externalEvent != "")
                 {
                     externalBehaviour.SendCustomEvent(externalEvent);
-                }
-            }
-
-            if (valueInitialized && enableValueSmoothing)
-            {
-                targetFloat = val;
-                epsilon = (valueMax - valueMin) / 100;
-                UpdateLoop();
-            }
-            else
-            {
-                foreach (Material targetMaterial in targetMaterials)
-                {
-                    switch (this.valueType)
-                    {
-                        case ShaderValueType.Vector4:
-                            Vector4 current = targetMaterial.GetVector(materialPropertyId);
-                            current[this.vectorIndex] = val;
-                            targetMaterial.SetVector(materialPropertyId, current);
-                            break;
-                        case ShaderValueType.Float:
-                            targetMaterial.SetFloat(materialPropertyId, val);
-                            break;
-                    }
-                }
-
-                valueInitialized = true;
-            }
-        }
-        
-        public void UpdateLoop()
-        {
-            Log($"UpdateLoop {smoothedCurrent} => {targetFloat}");
-            // smooth lerp smoothedCurrent to targetFloat
-
-            smoothedCurrent = Mathf.Lerp(targetFloat, smoothedCurrent,Mathf.Exp(-smoothingRate * Time.deltaTime * smoothUpdateInterval));
-            
-            if (Mathf.Abs(targetFloat - smoothedCurrent) <= epsilon)
-            {
-                smoothedCurrent = targetFloat;
-                Log($"value {materialPropertyId} reached target {targetFloat.ToString(valueDisplayFormat)}");
-            }
-            else
-            {
-                this.SendCustomEventDelayedFrames(nameof(UpdateLoop), smoothUpdateInterval, EventTiming.LateUpdate);
-            }
-            foreach (Material targetMaterial in targetMaterials)
-            {
-                switch (this.valueType)
-                {
-                    case ShaderValueType.Vector4:
-                        Vector4 current = targetMaterial.GetVector(materialPropertyId);
-                        current[this.vectorIndex] = smoothedCurrent;
-                        targetMaterial.SetVector(materialPropertyId, current);
-                        break;
-                    case ShaderValueType.Float:
-                        targetMaterial.SetFloat(materialPropertyId, smoothedCurrent);
-                        break;
                 }
             }
         }
@@ -595,27 +660,30 @@ namespace GoogieFaderSystem
             if (_isInitialized)
             {
                 Log("OnEnable");
-                if (_lastValue != currentValue)
+                if (_lastSyncedValueNormalized != syncedValueNormalized)
                 {
-                    _UpdateTargetFloat(currentValue);
+                    _UpdateTargetFloat(syncedValueNormalized);
                 }
             }
         }
 
         private void OnDisable()
         {
-            _lastValue = defaultValue;
-            _UpdateTargetFloat(defaultValue);
+            //TODO normalize defaultValue
+            var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
+            _lastSyncedValueNormalized = normalizedDefault;
+            _UpdateTargetFloat(normalizedDefault);
         }
 
         private void UpdatePositionToCurrentValue()
         {
+            // TODO: no need to normalize here anymore, use syncedValue directly
             // Calculate t based on currentValue's position between minValue and maxValue
-            float t = (currentValue - valueMin) / (valueMax - valueMin);
+            // float t = (syncedValueNormalized - minValue) / (maxValue - minValue);
 
             // Use t to find the corresponding xPos between LeftLimit and RightLimit
             // float xPos = _leftLimit + (_rightLimit - _leftLimit) * t;
-            float xPos = Mathf.Lerp(_leftLimit, _rightLimit, t);
+            float xPos = Mathf.Lerp(_leftLimit, _rightLimit, syncedValueNormalized);
             // Create the new position vector for the slider object
             Vector3 newPos = new Vector3(
                 xPos,
@@ -634,22 +702,36 @@ namespace GoogieFaderSystem
             if (!_isAuthorized) return;
 
             valueInitialized = false; // forces it to skip smoothing
-            this.currentValue = this.defaultValue;
+            var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
+            syncedValueNormalized = normalizedDefault;
+            Log($"Reset value to {defaultValue} ({normalizedDefault})");
 
             UpdatePositionToCurrentValue();
-            Log($"Reset value to {this.defaultValue}");
             RequestSerialization();
         }
 
-        private const string logPrefix = "[<color=#0C00FF>Wo1fieShaderFader</color>]";
+
+        /// <summary>
+        /// Normalizes the given value and evaluates it on a curve, then expands it back to the actual range.
+        /// </summary>
+        /// <param name="newValue">Float that should be evaluated.</param>
+        /// <returns>The provided float evaluated along a curve.</returns>
+        protected float EvaluateCurve(float newValue)
+        {
+            newValue = (newValue - minValue) / (maxValue - minValue);
+            newValue = sliderCurve.Evaluate(newValue);
+            return minValue + (newValue * (maxValue - minValue));
+        }
+
+        private const string logPrefix = "<color=#0C00FF>Wo1fieShaderFader</color>";
 
         private void LogError(string message)
         {
-            Debug.LogError($"{logPrefix} {message}");
+            Debug.LogError($"[{logPrefix} {materialPropertyId}] {message}");
             if (Utilities.IsValid(debugLog))
             {
                 debugLog._WriteError(
-                    $"{logPrefix} {materialPropertyId}",
+                    $"[{logPrefix} {materialPropertyId}]",
                     message
                 );
             }
@@ -657,11 +739,11 @@ namespace GoogieFaderSystem
 
         private void Log(string message)
         {
-            Debug.Log($"{logPrefix} {message}");
+            Debug.Log($"[{logPrefix} {materialPropertyId}] {message}");
             if (Utilities.IsValid(debugLog))
             {
                 debugLog._Write(
-                    $"{logPrefix} {materialPropertyId}",
+                    $"{logPrefix} {materialPropertyId}]",
                     message
                 );
             }
@@ -705,7 +787,7 @@ namespace GoogieFaderSystem
                 tmpLabelSub.text = labelSub;
                 tmpLabelSub.MarkDirty();
             }
-            
+
             if (tmpLabelValue)
             {
                 tmpLabelValue.text = defaultValue.ToString(valueDisplayFormat);
@@ -714,7 +796,9 @@ namespace GoogieFaderSystem
             _faderHandle = gameObject;
             _leftLimit = leftLimiter.gameObject.transform.localPosition.x;
             _rightLimit = rightLimiter.gameObject.transform.localPosition.x;
-            currentValue = defaultValue;
+
+            var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
+            syncedValueNormalized = normalizedDefault;
             UpdatePositionToCurrentValue();
         }
 #endif

@@ -619,6 +619,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1017635792868212326, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
+      propertyPath: maxValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1017635792868212326, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: minValue
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1017635792868212326, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
       propertyPath: valueMax
       value: 5
       objectReference: {fileID: 0}
@@ -631,6 +641,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelMain
       value: SATURATION
+      objectReference: {fileID: 0}
+    - target: {fileID: 1017635792868212326, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: syncedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1017635792868212326, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
@@ -717,6 +732,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1169047634090506195, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
+      propertyPath: maxValue
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1169047634090506195, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
       propertyPath: valueMax
       value: 3
       objectReference: {fileID: 0}
@@ -724,6 +744,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelMain
       value: SATURATION
+      objectReference: {fileID: 0}
+    - target: {fileID: 1169047634090506195, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: syncedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1169047634090506195, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
@@ -981,6 +1006,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2758846383476451505, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
+      propertyPath: maxValue
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2758846383476451505, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: minValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2758846383476451505, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
       propertyPath: valueMax
       value: 1.5
       objectReference: {fileID: 0}
@@ -993,6 +1028,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelMain
       value: CONTRAST
+      objectReference: {fileID: 0}
+    - target: {fileID: 2758846383476451505, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: syncedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2758846383476451505, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
@@ -1116,6 +1156,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3521961688061001939, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
+      propertyPath: maxValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521961688061001939, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: minValue
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521961688061001939, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
       propertyPath: valueMax
       value: 5
       objectReference: {fileID: 0}
@@ -1128,6 +1178,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelMain
       value: SATURATION
+      objectReference: {fileID: 0}
+    - target: {fileID: 3521961688061001939, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: syncedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3521961688061001939, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
@@ -1203,6 +1258,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4123913332883994323, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
+      propertyPath: maxValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123913332883994323, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: minValue
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123913332883994323, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
       propertyPath: valueMax
       value: 5
       objectReference: {fileID: 0}
@@ -1215,6 +1280,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelMain
       value: SATURATION
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123913332883994323, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: syncedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4123913332883994323, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
@@ -1281,6 +1351,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelSub
       value: AURA
+      objectReference: {fileID: 0}
+    - target: {fileID: 4291416128598942717, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: maxValue
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4291416128598942717, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
@@ -1717,6 +1792,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7789615795989460298, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
+      propertyPath: maxValue
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7789615795989460298, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: minValue
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7789615795989460298, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
       propertyPath: valueMax
       value: 3
       objectReference: {fileID: 0}
@@ -1729,6 +1814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: labelMain
       value: BRIGHTNESS
+      objectReference: {fileID: 0}
+    - target: {fileID: 7789615795989460298, guid: d957b9d2c81b34a47840deb5e15cc7a6,
+        type: 3}
+      propertyPath: syncedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7789615795989460298, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}

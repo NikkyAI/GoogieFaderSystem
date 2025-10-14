@@ -138,10 +138,10 @@ namespace GoogieFaderSystem
 
             foreach (var fader in presetController.faders)
             {
-                var key = fader.key;
+                var key = fader.Key;
                 //var key = fader.gameObject.GetInstanceID();
-                Log("Saving Fader" + key + " = " + fader.currentValue);
-                _faderValues.SetValue(key, new DataToken(fader.currentValue));
+                Log("Saving Fader" + key + " = " + fader.Value);
+                _faderValues.SetValue(key, new DataToken(fader.Value));
             }
 
             foreach (var toggle in presetController.toggles)
@@ -176,7 +176,7 @@ namespace GoogieFaderSystem
 
             foreach (var fader in presetController.faders)
             {
-                var key = fader.key;
+                var key = fader.Key;
                 Log($"loading value for {key}");
 
                 if (_faderValues.ContainsKey(key))

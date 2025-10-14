@@ -59,21 +59,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2462481375653513866}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -87,7 +112,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &2462481375653513866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,21 +1188,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 6121913272938577153}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -1192,7 +1241,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &6121913272938577153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3012,21 +3060,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2439232231969584108}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -3040,7 +3113,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &2439232231969584108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4369,21 +4441,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 3382998016839546114}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -4397,7 +4494,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &3382998016839546114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5117,21 +5213,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 4917330110326600911}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -5145,7 +5266,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &4917330110326600911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7873,21 +7993,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 356083809231723334}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -7901,7 +8046,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &356083809231723334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9521,21 +9665,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 5446909260638094}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -9549,7 +9718,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &5446909260638094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12932,21 +13100,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2445496613107469990}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -12960,7 +13153,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &2445496613107469990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13418,21 +13610,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1728155367233635822}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -13446,7 +13663,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &1728155367233635822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14476,21 +14692,46 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 4335163726144102150}
-  valueType: 0
-  vectorIndex: 0
   targetMaterials:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  valueMin: 0
-  valueMax: 1
+  minValue: 0
+  maxValue: 1
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
+  useCurve: 0
+  sliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   alwaysShowValue: 0
   valueDisplayFormat: 0.0
   labelMain: MAIN
   labelSub: SUB
+  assignVectorComponent: 0
+  vectorIndex: 0
   accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
@@ -14504,7 +14745,6 @@ MonoBehaviour:
   externalFloat: 
   externalEvent: 
   debugLog: {fileID: 0}
-  currentValue: 0
 --- !u!114 &4335163726144102150
 MonoBehaviour:
   m_ObjectHideFlags: 0
