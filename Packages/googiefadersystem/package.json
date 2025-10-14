@@ -1,15 +1,14 @@
 {
   "name": "googiefadersystem",
   "displayName": "Googie Fader System",
-  "version": "0.0.1",
-  "description": "A fader system for use in VRChat to smoothly adjust screen space shaders such as Mochie or June in VR or desktop mode. ",
+  "version": "0.0.2",
+  "description": "A fader system for use in VRChat to smoothly adjust screen space shaders such as Mochie or June in VR or desktop mode.",
   "gitDependencies": {},
   "vpmDependencies": {
     "com.vrchat.worlds": "3.9.0",
     "com.texelsaur.access": "1.2.3",
     "com.texelsaur.misc": "1.0.5"
   },
-  "dependencies": {},
   "author": {
     "name": "Damogus, NikkyAI, wake25 & wo1fie",
     "email": "",
