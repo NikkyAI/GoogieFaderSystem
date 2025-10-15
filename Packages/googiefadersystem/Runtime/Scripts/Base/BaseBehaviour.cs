@@ -22,7 +22,7 @@ namespace GoogieFaderSystem
             if (Utilities.IsValid(DebugLog))
             {
                 DebugLog._WriteError(
-                    $"[{LogPrefix}]",
+                    LogPrefix,
                     message
                 );
             }
@@ -33,7 +33,7 @@ namespace GoogieFaderSystem
             if (Utilities.IsValid(DebugLog))
             {
                 DebugLog._WriteError(
-                    $"[{LogPrefix}]",
+                    LogPrefix,
                     message
                 );
             }
@@ -44,7 +44,7 @@ namespace GoogieFaderSystem
             if (Utilities.IsValid(DebugLog))
             {
                 DebugLog._Write(
-                    $"[{LogPrefix}]",
+                    LogPrefix,
                     message
                 );
             }
