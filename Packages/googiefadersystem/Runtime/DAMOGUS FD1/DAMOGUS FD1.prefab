@@ -20021,7 +20021,7 @@ MonoBehaviour:
   localHandCollider: {fileID: 0}
   debugLogDefault: {fileID: 0}
   debugLogFader: {fileID: 0}
-  debugLogButton: {fileID: 0}
+  debugLogToggle: {fileID: 0}
   debugLogTiltHandle: {fileID: 0}
   debugLogResetTrigger: {fileID: 0}
 --- !u!114 &4318006592872678814
