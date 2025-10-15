@@ -227,18 +227,18 @@ namespace GoogieFaderSystem
                 tmpLabelValue.enabled = alwaysShowValue;
             }
 
-            if (ACL)
+            if (accessControl)
             {
-                Log($"registered _OnValidate on {ACL}");
-                ACL._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                ACL._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
+                Log($"registered _OnValidate on {accessControl}");
+                accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
+                accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
 
                 _OnValidate();
                 Log($"setting isInteractable to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
             }
             else
             {
-                LogError("No access control set on SimpleGlobalToggle");
+                LogError("No access control set");
             }
 
             // if (debugState)
@@ -257,7 +257,7 @@ namespace GoogieFaderSystem
         {
             // Log("_OnValidate");
             var oldAuthorized = _isAuthorized;
-            _isAuthorized = ACL._LocalHasAccess();
+            _isAuthorized = accessControl._LocalHasAccess();
             if (_isAuthorized != oldAuthorized)
             {
                 Log($"setting isAuthorized to {_isAuthorized} for {_localPlayer.displayName}");
@@ -716,6 +716,8 @@ namespace GoogieFaderSystem
             valueInitialized = false; // forces it to skip smoothing
             var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
             syncedValueNormalized = normalizedDefault;
+            smoothedCurrentNormalized = normalizedDefault;
+            smoothingTargetNormalized = normalizedDefault;
             Log($"Reset value to {defaultValue} ({normalizedDefault})");
 
             UpdatePositionToCurrentValue();

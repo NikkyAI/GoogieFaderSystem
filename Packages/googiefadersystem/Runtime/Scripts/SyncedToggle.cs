@@ -4,7 +4,6 @@ using VRC.SDKBase;
 using VRC.Udon;
 using Texel;
 using TMPro;
-using UnityEngine.Serialization;
 using VRC;
 
 namespace GoogieFaderSystem
@@ -13,8 +12,8 @@ namespace GoogieFaderSystem
     public class SyncedToggle : EventBase
     {
 
-        [FormerlySerializedAs("_targets")] private GameObject[] targetsOn = { null, null };
-        [FormerlySerializedAs("_targets2")] private GameObject[] targetsOff = { null };
+        [SerializeField] private GameObject[] targetsOn = { null, null };
+        [SerializeField] private GameObject[] targetsOff = { null };
 
         [Tooltip("The button will initialize into this value, toggle this for elements that should be enabled by default"),
          SerializeField]
@@ -211,12 +210,18 @@ namespace GoogieFaderSystem
         {
             foreach (var obj in targetsOn)
             {
-                obj.SetActive(_isOn);
+                if (obj)
+                {
+                    obj.SetActive(_isOn);
+                }
             }
 
             foreach (var obj in targetsOff)
             {
-                obj.SetActive(!_isOn);
+                if (obj)
+                {
+                    obj.SetActive(!_isOn);
+                }
             }
 
             _UpdateHandlers(EVENT_UPdATE);
@@ -244,9 +249,9 @@ namespace GoogieFaderSystem
         private void LogError(string message)
         {
             Debug.LogError($"{logPrefix} {message}");
-            if (Utilities.IsValid(DebugLog))
+            if (Utilities.IsValid(debugLog))
             {
-                DebugLog._WriteError(
+                debugLog._WriteError(
                     logPrefix,
                     message
                 );
@@ -256,9 +261,9 @@ namespace GoogieFaderSystem
         private void Log(string message)
         {
             Debug.Log($"{logPrefix} {message}");
-            if (Utilities.IsValid(DebugLog))
+            if (Utilities.IsValid(debugLog))
             {
-                DebugLog._Write(
+                debugLog._Write(
                     logPrefix,
                     message
                 );

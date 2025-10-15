@@ -258,9 +258,9 @@ Material:
     - _SSTUseGlobal: 1
     - _SSTWidth: 1
     - _Saturation: 1
-    - _SaturationB: 1
-    - _SaturationG: 1
-    - _SaturationR: 1
+    - _SaturationB: 1.0000002
+    - _SaturationG: 1.0000002
+    - _SaturationR: 1.0000002
     - _ScanLine: 0
     - _ScanLineSpeed: 1
     - _ScanLineThick: 1

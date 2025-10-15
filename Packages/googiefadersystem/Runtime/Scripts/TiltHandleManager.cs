@@ -48,6 +48,7 @@ namespace GoogieFaderSystem
             {
                 handle.ACL = accessControl;
                 handle.DebugLog = debugLog;
+                handle.ApplyValues();
                 handle.MarkDirty();
             }
         }

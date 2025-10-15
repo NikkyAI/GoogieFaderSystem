@@ -379,12 +379,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2194782567338135323}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5998045704698296506 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5568764538086602657, guid: a17f4ac853dd90b4eba8269581869452,
-    type: 3}
-  m_PrefabInstance: {fileID: 2194782567338135323}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6449103642512724475 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5119113408235364064, guid: a17f4ac853dd90b4eba8269581869452,
@@ -890,11 +884,6 @@ PrefabInstance:
       propertyPath: accessControl
       value: 
       objectReference: {fileID: 3805708974700592324}
-    - target: {fileID: 2249753716532124652, guid: d957b9d2c81b34a47840deb5e15cc7a6,
-        type: 3}
-      propertyPath: targetsOn.Array.data[0]
-      value: 
-      objectReference: {fileID: 5998045704698296506}
     - target: {fileID: 2249753716532124652, guid: d957b9d2c81b34a47840deb5e15cc7a6,
         type: 3}
       propertyPath: targetsOn.Array.data[1]

@@ -1,6 +1,7 @@
 ﻿using Texel;
 using UdonSharp;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VRC;
 using VRC.SDKBase;
 using VRC.Udon;
@@ -13,15 +14,15 @@ namespace GoogieFaderSystem
     {
         [Tooltip(("Value for reset")),
          SerializeField]
-        private float defaultValue = -70; // Value for reset
+        private float defaultAngle = -70; // Value for reset
 
         [Tooltip(("minimum value")),
          SerializeField]
-        private float valueMin = -90; // Default minimum value
+        private float minAngle = -90; // Default minimum value
 
         [Tooltip(("maximum value")),
          SerializeField]
-        private float valueMax = -45; // Default maximum value
+        private float maxAngle = -45; // Default maximum value
 
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
@@ -40,8 +41,12 @@ namespace GoogieFaderSystem
          SerializeField]
         private AccessControl accessControl;
 
-        [SerializeField] private GameObject hinge;
+        [SerializeField] private Transform hingeTransform;
+        private Transform baseTransform;
 
+        [SerializeField] private PickupTrigger pickupTrigger;
+        private VRC_Pickup pickup;
+        
         // [UdonSynced(UdonSyncMode.NotSynced)]
         private bool isAuthorized = false; // should be set by whitelist and false by default
 
@@ -53,6 +58,27 @@ namespace GoogieFaderSystem
         {
             DisableInteractive = true;
             _localPlayer = Networking.LocalPlayer;
+
+            if (pickupTrigger)
+            {
+                pickup = pickupTrigger.GetComponent<VRC_Pickup>();
+                pickupTrigger.accessControl = accessControl;
+                pickupTrigger._Register(PickupTrigger.EVENT_PICKUP, this, nameof(_OnPickup));
+                pickupTrigger._Register(PickupTrigger.EVENT_DROP, this, nameof(_OnDrop));
+            }
+            else
+            {
+                LogError("missing pickup");
+            }
+
+            if (hingeTransform)
+            {
+                baseTransform = hingeTransform.parent;
+            }
+            else
+            {
+                LogError("missing hingeTransform");
+            }
 
             if (accessControl)
             {
@@ -73,7 +99,6 @@ namespace GoogieFaderSystem
             OnDeserialization();
         }
 
-
         public void _OnValidate()
         {
             // Log("_OnValidate");
@@ -84,14 +109,16 @@ namespace GoogieFaderSystem
                 Log($"setting isAuthorized to {isAuthorized} for {_localPlayer.displayName}");
             }
 
-            if (isAuthorized)
-            {
-                DisableInteractive = false;
-            }
-            else
-            {
-                DisableInteractive = true;
-            }
+            // if (isAuthorized)
+            // {
+            //     pickup.pickupable = false;
+            //     DisableInteractive = false;
+            // }
+            // else
+            // {
+            //     pickup.pickupable = false;
+            //     DisableInteractive = true;
+            // }
         }
 
         private bool _AccessCheck()
@@ -110,68 +137,112 @@ namespace GoogieFaderSystem
             }
         }
 
-        public override void Interact()
+        public void _OnPickup()
         {
-            if (!isAuthorized)
+            if (isHeld)
             {
+                Log("already being adjusted");
                 return;
             }
-
-
+            
             if (!_localPlayer.IsOwner(gameObject))
             {
                 Networking.SetOwner(_localPlayer, gameObject);
             }
-
-            Log("Interact");
+            
             isHeld = true;
+            this.SendCustomEventDelayedFrames(nameof(FollowPickup), 5);
         }
 
-        public override void InputGrab(bool value, UdonInputEventArgs args)
+        public void _OnDrop()
         {
-            if (!isAuthorized)
-            {
-                return;
-            }
+            isHeld = false;
 
-            if (isHeld && !value)
-            {
-                Log($"InputGrab {value} {args.handType}");
-                isHeld = false;
-            }
+            Log("handle released, resetting position");
+            pickup.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         }
 
-        public override void InputLookVertical(float value, UdonInputEventArgs args)
+        public void FollowPickup()
         {
-            if (!isAuthorized)
-            {
-                return;
-            }
-
-            if (!isHeld)
-            {
-                return;
-            }
-
-            Log($"InputLookVertical {value} {args.handType}");
-
-            var offset = (valueMax - valueMin) * value / desktopDampening;
-
-            syncedValue = Mathf.Clamp(syncedValue + offset, valueMin, valueMax);
+            if (!isHeld) return;
+            var relativePos = baseTransform.transform.InverseTransformPoint(pickup.transform.position);
+            relativePos.x = 0;
+            
+            var angle = -Vector3.Angle(Vector3.up, relativePos);
+            syncedValue = Mathf.Clamp(maxAngle, minAngle, angle);
+            Log($"angle: {angle} -> {syncedValue}");
+            
             RequestSerialization();
             OnDeserialization();
+
+            if (isHeld)
+            {
+                this.SendCustomEventDelayedFrames(nameof(FollowPickup), 5);
+            }
         }
+
+        // public override void Interact()
+        // {
+        //     if (!isAuthorized)
+        //     {
+        //         return;
+        //     }
+        //
+        //
+        //     if (!_localPlayer.IsOwner(gameObject))
+        //     {
+        //         Networking.SetOwner(_localPlayer, gameObject);
+        //     }
+        //
+        //     Log("Interact");
+        //     isHeld = true;
+        // }
+
+        // public override void InputGrab(bool value, UdonInputEventArgs args)
+        // {
+        //     if (!isAuthorized)
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (isHeld && !value)
+        //     {
+        //         Log($"InputGrab {value} {args.handType}");
+        //         isHeld = false;
+        //     }
+        // }
+
+        // public override void InputLookVertical(float value, UdonInputEventArgs args)
+        // {
+        //     if (!isAuthorized)
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (!isHeld)
+        //     {
+        //         return;
+        //     }
+        //
+        //     Log($"InputLookVertical {value} {args.handType}");
+        //
+        //     var offset = (maxAngle - minAngle) * value / desktopDampening;
+        //
+        //     syncedValue = Mathf.Clamp(syncedValue + offset, minAngle, maxAngle);
+        //     RequestSerialization();
+        //     OnDeserialization();
+        // }
 
         private void UpdateHingeTilt()
         {
             // Create the new position vector for the slider object
             Quaternion newRot = Quaternion.Euler(
                 syncedValue,
-                hinge.transform.localRotation.y,
-                hinge.transform.localRotation.z
+                hingeTransform.transform.localRotation.y,
+                hingeTransform.transform.localRotation.z
             );
 
-            hinge.transform.localRotation = newRot;
+            hingeTransform.transform.localRotation = newRot;
 
             // // Set the slider object's position to newPos
             // syncedSliderPosition = newPos;
@@ -179,11 +250,11 @@ namespace GoogieFaderSystem
 
         public void Reset()
         {
-            syncedValue = defaultValue;
+            syncedValue = defaultAngle;
             RequestSerialization();
 
             UpdateHingeTilt();
-            Log($"Reset tilt to {defaultValue}");
+            Log($"Reset tilt to {defaultAngle}");
         }
 
         private const string logPrefix = "[<color=#0C00FF>TiltHandle</color>]";
@@ -194,8 +265,21 @@ namespace GoogieFaderSystem
             if (Utilities.IsValid(debugLog))
             {
                 debugLog._Write(
-                    $"{logPrefix}",
+                    logPrefix,
                     text
+                );
+            }
+        }
+        
+        
+        private void LogError(string message)
+        {
+            Debug.LogError($"{logPrefix} {message}");
+            if (Utilities.IsValid(debugLog))
+            {
+                debugLog._WriteError(
+                    logPrefix,
+                    message
                 );
             }
         }
@@ -219,9 +303,9 @@ namespace GoogieFaderSystem
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
             //TODO: check on localTransforms too
-            if (prevDefault == defaultValue)
+            if (prevDefault == defaultAngle)
                 return; // To prevent trying to apply the theme to often, as without it every single change in the scene causes it to be applied
-            prevDefault = defaultValue;
+            prevDefault = defaultAngle;
 
             ApplyValues();
         }
@@ -232,10 +316,14 @@ namespace GoogieFaderSystem
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
 
-            syncedValue = defaultValue;
+            pickupTrigger.accessControl = accessControl;
+            pickupTrigger.MarkDirty();
+
+            syncedValue = defaultAngle;
             UpdateHingeTilt();
             this.MarkDirty();
-            hinge.transform.MarkDirty();
+            hingeTransform.transform.MarkDirty();
+            
         }
 #endif
     }
