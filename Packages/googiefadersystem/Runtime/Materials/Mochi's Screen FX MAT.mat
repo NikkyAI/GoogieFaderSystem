@@ -257,7 +257,7 @@ Material:
     - _SSTUD: 0
     - _SSTUseGlobal: 1
     - _SSTWidth: 1
-    - _Saturation: 1
+    - _Saturation: 0.92136365
     - _SaturationB: 1.0000002
     - _SaturationG: 1.0000002
     - _SaturationR: 1.0000002

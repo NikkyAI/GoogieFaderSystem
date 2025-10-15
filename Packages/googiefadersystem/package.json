@@ -1,7 +1,7 @@
 {
   "name": "googiefadersystem",
   "displayName": "Googie Fader System",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A fader system for use in VRChat to smoothly adjust screen space shaders such as Mochie or June in VR or desktop mode.",
   "gitDependencies": {},
   "vpmDependencies": {

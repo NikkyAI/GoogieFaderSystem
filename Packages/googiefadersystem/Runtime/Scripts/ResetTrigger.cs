@@ -6,7 +6,8 @@ using VRC.SDKBase;
 using VRC.Udon;
 
 namespace GoogieFaderSystem {
-    public class ResetTrigger : EventBase
+    [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
+    public class ResetTrigger : ACLBase
     {
         [SerializeField] private ShaderFader[] shaderFaders;
         [SerializeField] private SyncedToggle[] toggles;
@@ -14,8 +15,23 @@ namespace GoogieFaderSystem {
         [Header("Internals")] // header
         [Tooltip("ACL used to check who can use the fader")]
         [SerializeField] private AccessControl accessControl;
+        protected override AccessControl AccessControl
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+        protected override bool UseACL => true;
+
+        protected override string LogPrefix => nameof(ResetTrigger);
         
-        private bool _isAuthorized = false; // should be set by whitelist and false by default
+        [Header("Debug")] // header
+        [SerializeField] private DebugLog debugLog;
+
+        protected override DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
 
         public const int EVENT_RESET = 0;
         public const int EVENT_COUNT = 1;
@@ -29,33 +45,11 @@ namespace GoogieFaderSystem {
         protected override void _Init()
         {
             
-            if (accessControl)
-            {
-                Log($"registered _OnValidate on {accessControl}");
-                accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
-
-                _OnValidate();
-                Log($"setting isInteractable to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
-            }
-            else
-            {
-                LogError("No access control set");
-            }
         }
         
-        
-        public void _OnValidate()
+        protected override void AccessChanged()
         {
-            // Log("_OnValidate");
-            var oldAuthorized = _isAuthorized;
-            _isAuthorized = accessControl._LocalHasAccess();
-            if (_isAuthorized != oldAuthorized)
-            {
-                Log($"setting isAuthorized to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
-            }
-
-            if (_isAuthorized)
+            if (isAuthorized)
             {
                 DisableInteractive = false;
             }
@@ -80,39 +74,5 @@ namespace GoogieFaderSystem {
                 toggle.OnDeserialization();
             }
         }
-        
-        
-        private const string logPrefix = "[ResetTrigger]";
-
-        private void LogError(string message)
-        {
-            Debug.LogError($"{logPrefix} {message}");
-            // if (Utilities.IsValid(debugLog))
-            // {
-            //     debugLog._WriteError(
-            //         $"[{logPrefix} {materialPropertyId}]",
-            //         message
-            //     );
-            // }
-        }
-
-        private void Log(string message)
-        {
-            Debug.Log($"{logPrefix} {message}");
-            // if (Utilities.IsValid(debugLog))
-            // {
-            //     debugLog._Write(
-            //         $"{logPrefix} {materialPropertyId}]",
-            //         message
-            //     );
-            // }
-        }
-#if UNITY_EDITOR && !COMPILER_UDONSHARP
-        public AccessControl ACL
-        {
-            get => accessControl;
-            set => accessControl = value;
-        }
-#endif
     }
 }

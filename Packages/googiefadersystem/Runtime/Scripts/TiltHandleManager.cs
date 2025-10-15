@@ -1,4 +1,5 @@
-﻿using Texel;
+﻿using System;
+using Texel;
 using UdonSharp;
 using UnityEngine;
 using VRC;
@@ -16,9 +17,9 @@ namespace GoogieFaderSystem
         [SerializeField]
         private DebugLog debugLog;
 
-        private AccessControl prevAccessControl;
-        private DebugLog prevDebugLog;
-        private bool childrenInitialized = false;
+        [NonSerialized] private AccessControl prevAccessControl;
+        [NonSerialized] private DebugLog prevDebugLog;
+        [NonSerialized] private bool childrenInitialized = false;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
         private void OnValidate()
         {
@@ -46,8 +47,8 @@ namespace GoogieFaderSystem
         {
             foreach (var handle in gameObject.GetComponentsInChildren<TiltHandle>(true))
             {
-                handle.ACL = accessControl;
-                handle.DebugLog = debugLog;
+                handle.EditorACL = accessControl;
+                handle.EditorDebugLog = debugLog;
                 handle.ApplyValues();
                 handle.MarkDirty();
             }

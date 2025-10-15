@@ -9,43 +9,51 @@ using VRC.Udon;
 namespace GoogieFaderSystem
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class LocalToggle : EventBase
+    public class LocalToggle : ACLBase
     {
-
-        public GameObject[] targetsOn = { };
-        public GameObject[] targetsOff = { };
+        [SerializeField] private GameObject[] targetsOn = { };
+        [SerializeField] private GameObject[] targetsOff = { };
 
         [Tooltip(
             "The button will initialize into this value, toggle this for elements that should be enabled by default")]
-        [SerializeField]
-        private bool defaultValue = false;
+        [SerializeField] private bool defaultValue = false;
 
         [Header("Persistence")] // header
         [Tooltip("Turn on if this toggle should be saved using Persistence.")]
         [SerializeField] private bool usePersistence = false;
         [Tooltip("Data Key that will be used to save / load this Setting, everything using Persistence should have a different Data Key.")]
-        [SerializeField]
-        private string dataKey = "CHANGE THIS";
+        [SerializeField] private string dataKey = "CHANGE THIS";
 
         [Header("Access Control")] // header
         [SerializeField] private bool useACL;
+        protected override bool UseACL => useACL;
+
         [Tooltip("ACL used to check who can use the toggle")]
-        public AccessControl accessControl;
+        [SerializeField] private AccessControl accessControl;
+        protected override AccessControl AccessControl
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
 
         [Header("External")] // header
-        [SerializeField]
-        private UdonBehaviour externalBehaviour;
+        [SerializeField] private UdonBehaviour externalBehaviour;
 
         [SerializeField] private string externalBool = "";
         [SerializeField] private string externalEvent = "";
 
         [Header("Debug")] // header
-        public DebugLog debugLog;
-        
-        private bool _isOn;
-        private bool _isAuthorized = false;
+        [SerializeField] private DebugLog debugLog;
+        protected override DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
+        protected override string LogPrefix => nameof(LocalToggle);
 
-        public bool state => _isOn;
+        private bool _isOn;
+
+        public bool State => _isOn;
 
         public const int EVENT_UPdATE = 0;
         public const int EVENT_COUNT = 1;
@@ -59,36 +67,14 @@ namespace GoogieFaderSystem
 
         protected override void _Init()
         {
-            if (useACL)
-            {
-                if (accessControl)
-                {
-                    accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                    accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
-                    _OnValidate();
-                }
-                else
-                {
-                    DisableInteractive = true;
-                    LogError("No access control set");
-                }
-            }
 
             _isOn = defaultValue;
             _UpdateState();
         }
 
-        public void _OnValidate()
+        protected override void AccessChanged()
         {
-            // Log("_OnValidate");
-            var oldAuthorized = _isAuthorized;
-            _isAuthorized = accessControl._LocalHasAccess();
-            if (_isAuthorized != oldAuthorized)
-            {
-                Log($"setting isAuthorized to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
-            }
-
-            if (_isAuthorized)
+            if (isAuthorized)
             {
                 DisableInteractive = false;
             }
@@ -119,7 +105,7 @@ namespace GoogieFaderSystem
 
         public override void Interact()
         {
-            if (useACL && !_isAuthorized) return;
+            if (useACL && !isAuthorized) return;
 
             _isOn = !_isOn;
             _UpdateState();
@@ -154,32 +140,6 @@ namespace GoogieFaderSystem
                 {
                     externalBehaviour.SendCustomEvent(externalEvent);
                 }
-            }
-        }
-
-        private const string logPrefix = "[LocalToggle]";
-
-        private void LogError(string message)
-        {
-            Debug.LogError($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._WriteError(
-                    logPrefix,
-                    message
-                );
-            }
-        }
-
-        private void Log(string message)
-        {
-            Debug.Log($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._Write(
-                    logPrefix,
-                    message
-                );
             }
         }
     }

@@ -29,7 +29,7 @@ namespace GoogieFaderSystem
     // };
 
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
-    public class ShaderFader : EventBase
+    public class ShaderFader : ACLBase
     {
         [SerializeField] private Material[] targetMaterials;
         [SerializeField] private string materialPropertyId;
@@ -97,6 +97,13 @@ namespace GoogieFaderSystem
         [Header("Internals")] // header
         [Tooltip("ACL used to check who can use the fader")]
         [SerializeField] private AccessControl accessControl;
+        protected override AccessControl AccessControl
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+
+        protected override bool UseACL => true;
 
         [SerializeField] private GameObject leftHandCollider;
         [SerializeField] private GameObject rightHandCollider;
@@ -119,6 +126,13 @@ namespace GoogieFaderSystem
 
         [Header("Debug")] // header
         [SerializeField] private DebugLog debugLog;
+        protected override DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
+
+        protected override string LogPrefix => $"<color=#0C00FF>Wo1fieShaderFader</color> {materialPropertyId}";
         // [SerializeField] private DebugState debugState;
 
         [Header("State")] // header
@@ -145,9 +159,6 @@ namespace GoogieFaderSystem
         private GameObject _faderHandle;
         private Material[] _handleMat;
         private VRCPlayerApi _localPlayer;
-
-        //[UdonSynced(UdonSyncMode.NotSynced)]
-        private bool _isAuthorized = false; // should be set by whitelist and false by default
 
         private bool _isDesktop = false;
 
@@ -228,20 +239,6 @@ namespace GoogieFaderSystem
                 tmpLabelValue.enabled = alwaysShowValue;
             }
 
-            if (accessControl)
-            {
-                Log($"registered _OnValidate on {accessControl}");
-                accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
-
-                _OnValidate();
-                Log($"setting isInteractable to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
-            }
-            else
-            {
-                LogError("No access control set");
-            }
-
             // if (debugState)
             // {
             //     debugState._Register(DebugState.EVENT_UPDATE, this, nameof(_InternalUpdateDebugState));
@@ -254,17 +251,15 @@ namespace GoogieFaderSystem
             _isInitialized = true;
         }
 
-        public void _OnValidate()
+        protected override void AccessChanged()
         {
-            // Log("_OnValidate");
-            var oldAuthorized = _isAuthorized;
-            _isAuthorized = accessControl._LocalHasAccess();
-            if (_isAuthorized != oldAuthorized)
+            if (isAuthorized != this.isAuthorized)
             {
-                Log($"setting isAuthorized to {_isAuthorized} for {_localPlayer.displayName}");
+                Log($"setting isAuthorized to {this.isAuthorized} for {_localPlayer.displayName}");
             }
+            this.isAuthorized = isAuthorized;
 
-            if (_isDesktop && _isAuthorized)
+            if (_isDesktop && this.isAuthorized)
             {
                 DisableInteractive = false;
             }
@@ -276,7 +271,7 @@ namespace GoogieFaderSystem
 
         public void SetValue(float newValue)
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
 
             float normalizedNewValue = Mathf.InverseLerp(minValue, maxValue, newValue);
             // syncedValueNormalized = newValue;
@@ -312,7 +307,7 @@ namespace GoogieFaderSystem
 
         public override void Interact()
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
             if (!_isDesktop) return;
 
             if (!_localPlayer.IsOwner(_faderHandle))
@@ -349,7 +344,7 @@ namespace GoogieFaderSystem
 
         public override void InputLookVertical(float value, UdonInputEventArgs args)
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
             if (!_isDesktop) return;
             if (!_isHeld) return;
             // Log($"InputLookVertical {value} {args.handType}");
@@ -357,6 +352,15 @@ namespace GoogieFaderSystem
             if (!_localPlayer.IsOwner(_faderHandle))
             {
                 Networking.SetOwner(_localPlayer, _faderHandle);
+            }
+
+            if (!valueInitialized)
+            {
+                float normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
+                syncedValueNormalized = normalizedDefault;
+                smoothedCurrentNormalized = normalizedDefault;
+                smoothingTargetNormalized = normalizedDefault;
+                valueInitialized = true;
             }
 
             // var offset = (maxValue - minValue) * value / _desktopDampening;
@@ -374,7 +378,7 @@ namespace GoogieFaderSystem
 
         public override void InputGrab(bool value, UdonInputEventArgs args)
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
 
             // Log($"InputGrab({value}, {args.handType})");
 
@@ -434,7 +438,7 @@ namespace GoogieFaderSystem
 
         public void Update()
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
             if (_isDesktop) return;
             // if (!isDesktop && (_rightGrabbed || _leftGrabbed) && _inTrigger)
             // if (((_rightGrabbed && _inRightTrigger) || (_leftGrabbed && _inLeftTrigger)))
@@ -490,7 +494,7 @@ namespace GoogieFaderSystem
 
         public void OnTriggerEnter(Collider other)
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
 
             // Log($"OnTriggerEnter() Other: {other.name} ({other.GetInstanceID()}), Script on: {gameObject.name} ({gameObject.GetInstanceID()}), UID: {uid}");
             if (other.gameObject == leftHandCollider)
@@ -524,7 +528,7 @@ namespace GoogieFaderSystem
 
         public void OnTriggerExit(Collider other)
         {
-            if (!_isAuthorized)
+            if (!isAuthorized)
             {
                 return;
             }
@@ -714,7 +718,7 @@ namespace GoogieFaderSystem
 
         public void Reset()
         {
-            if (!_isAuthorized) return;
+            if (!isAuthorized) return;
 
             valueInitialized = false; // forces it to skip smoothing
             var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
@@ -739,42 +743,11 @@ namespace GoogieFaderSystem
             return minValue + (newValue * (maxValue - minValue));
         }
 
-        private const string logPrefix = "<color=#0C00FF>Wo1fieShaderFader</color>";
-
-        private void LogError(string message)
-        {
-            Debug.LogError($"[{logPrefix} {materialPropertyId}] {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._WriteError(
-                    $"[{logPrefix} {materialPropertyId}]",
-                    message
-                );
-            }
-        }
-
-        private void Log(string message)
-        {
-            Debug.Log($"[{logPrefix} {materialPropertyId}] {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._Write(
-                    $"{logPrefix} {materialPropertyId}]",
-                    message
-                );
-            }
-        }
-
         [NonSerialized] private string prevMain;
         [NonSerialized] private string prevSub;
         [NonSerialized] private float prevDefaultValue;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
-        public AccessControl ACL
-        {
-            get => accessControl;
-            set => accessControl = value;
-        }
-        public DebugLog DebugLog
+        public DebugLog EditorDebugLog
         {
             get => debugLog;
             set => debugLog = value;

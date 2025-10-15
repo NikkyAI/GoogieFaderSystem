@@ -1,4 +1,5 @@
 ﻿
+using System;
 using Texel;
 using UdonSharp;
 using UnityEngine;
@@ -19,9 +20,9 @@ namespace GoogieFaderSystem
         private DebugLog debugLog;
 
 
-        private AccessControl prevAccessControl;
-        private DebugLog prevDebugLog;
-        private bool childrenInitialized = false;
+        [NonSerialized] private AccessControl prevAccessControl;
+        [NonSerialized] private DebugLog prevDebugLog;
+        [NonSerialized] private bool childrenInitialized = false;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
 
         private void OnValidate()
@@ -49,8 +50,8 @@ namespace GoogieFaderSystem
         {
             foreach (var toggle in gameObject.GetComponentsInChildren<SyncedToggle>(true))
             {
-                toggle.ACL = accessControl;
-                toggle.DebugLog = debugLog;
+                toggle.EditorACL = accessControl;
+                toggle.EditorDebugLog = debugLog;
                 toggle.MarkDirty();
             }
         }

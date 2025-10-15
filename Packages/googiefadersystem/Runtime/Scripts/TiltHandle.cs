@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using Texel;
 using UdonSharp;
 using UnityEngine;
@@ -13,7 +14,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace GoogieFaderSystem
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
-    public class TiltHandle : UdonSharpBehaviour
+    public class TiltHandle : ACLBase
     {
         [Tooltip(("Value for reset")),
          SerializeField]
@@ -34,30 +35,45 @@ namespace GoogieFaderSystem
 
         [Header("State")] // header
         [UdonSynced] private float syncedValue = 0;
+        public float SyncedValue => syncedValue;
 
         [Header("Debug")] // header
         [SerializeField] private DebugLog debugLog;
+        protected override DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
+        protected override string LogPrefix => nameof(TiltHandle);
         // [SerializeField] DebugState debugState;
 
         [Header("Internals")]  // header
         [Tooltip("ACL used to check who can use the fader"), 
          SerializeField]
         private AccessControl accessControl;
+        protected override AccessControl AccessControl
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+        protected override bool UseACL => true;
 
         [SerializeField] private Transform hingeTransform;
         private Transform baseTransform;
 
         [SerializeField] private PickupTrigger pickupTrigger;
         private VRC_Pickup pickup;
-        
-        // [UdonSynced(UdonSyncMode.NotSynced)]
-        private bool isAuthorized = false; // should be set by whitelist and false by default
 
         private VRCPlayerApi _localPlayer;
         private float _lastValue;
         private bool isHeld;
 
-        void Start()
+        private void Start()
+        {
+            _EnsureInit();
+        }
+
+        protected override void _Init()
         {
             DisableInteractive = true;
             _localPlayer = Networking.LocalPlayer;
@@ -83,34 +99,13 @@ namespace GoogieFaderSystem
                 LogError("missing hingeTransform");
             }
 
-            if (accessControl)
-            {
-                Log($"registered _OnValidate on {accessControl}");
-                accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
-
-                _OnValidate();
-                Log($"setting isInteractable to {isAuthorized} for {Networking.LocalPlayer.displayName}");
-            }
-            // if (debugState)
-            // {
-            //     debugState._Register(DebugState.EVENT_UPDATE, this, nameof(_InternalUpdateDebugState));
-            //     debugState._SetContext(this, nameof(_InternalUpdateDebugState), "ShaderFader." + materialPropertyId);
-            // }
-
             Reset();
             OnDeserialization();
         }
 
-        public void _OnValidate()
+        protected override void AccessChanged()
         {
             // Log("_OnValidate");
-            var oldAuthorized = isAuthorized;
-            isAuthorized = !accessControl.enforce || _AccessCheck();
-            if (isAuthorized != oldAuthorized)
-            {
-                Log($"setting isAuthorized to {isAuthorized} for {_localPlayer.displayName}");
-            }
 
             // if (isAuthorized)
             // {
@@ -122,13 +117,6 @@ namespace GoogieFaderSystem
             //     pickup.pickupable = false;
             //     DisableInteractive = true;
             // }
-        }
-
-        private bool _AccessCheck()
-        {
-            if (!Utilities.IsValid(accessControl))
-                return false;
-            return accessControl._LocalHasAccess();
         }
 
         public override void OnDeserialization()
@@ -261,53 +249,29 @@ namespace GoogieFaderSystem
             Log($"Reset tilt to {defaultAngle}");
         }
 
-        private const string logPrefix = "[<color=#0C00FF>TiltHandle</color>]";
-
-        private void Log(string text)
-        {
-            Debug.Log($"{logPrefix} {text}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._Write(
-                    logPrefix,
-                    text
-                );
-            }
-        }
-        
-        
-        private void LogError(string message)
-        {
-            Debug.LogError($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._WriteError(
-                    logPrefix,
-                    message
-                );
-            }
-        }
-
-        private float prevDefault;
+        [NonSerialized] private float prevDefault;
+        [NonSerialized] private PickupTrigger prevPickupTrigger;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
-
-        public AccessControl ACL
+        public override AccessControl EditorACL
         {
-            get => accessControl;
-            set => accessControl = value;
+            get => AccessControl;
+            set
+            {
+                AccessControl = value;
+                if (pickupTrigger)
+                {
+                    pickupTrigger.accessControl = accessControl;
+                    pickupTrigger.MarkDirty();
+                }
+            }
         }
 
-        public DebugLog DebugLog
-        {
-            get => debugLog;
-            set => debugLog = value;
-        }
         private void OnValidate()
         {
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
             //TODO: check on localTransforms too
-            if (prevDefault == defaultAngle)
+            if (prevDefault == defaultAngle && pickupTrigger == prevPickupTrigger)
                 return; // To prevent trying to apply the theme to often, as without it every single change in the scene causes it to be applied
             prevDefault = defaultAngle;
 

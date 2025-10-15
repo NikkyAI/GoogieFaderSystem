@@ -1,4 +1,5 @@
-﻿using UdonSharp;
+﻿using System;
+using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
@@ -9,7 +10,7 @@ using VRC;
 namespace GoogieFaderSystem
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
-    public class SyncedToggle : EventBase
+    public class SyncedToggle : ACLBase
     {
 
         [SerializeField] private GameObject[] targetsOn = { null, null };
@@ -31,9 +32,16 @@ namespace GoogieFaderSystem
 
         [Header("Access Control")] // header
         [SerializeField] private bool useACL = true;
+        protected override bool UseACL => useACL;
+        
         [Tooltip("ACL used to check who can use the toggle"),
          SerializeField]
         private AccessControl accessControl;
+        protected override AccessControl AccessControl
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
         
         [Header("External")] // header
         [SerializeField]
@@ -44,6 +52,13 @@ namespace GoogieFaderSystem
 
         [Header("Debug")] // header
         [SerializeField] private DebugLog debugLog;
+
+        protected override DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
+        protected override string LogPrefix => nameof(SyncedToggle);
 
         [Header("Backend")] // header
         [Tooltip(
@@ -58,11 +73,10 @@ namespace GoogieFaderSystem
 
         [UdonSynced] private bool _isOn = false;
 
-        private bool _isAuthorized = false;
-
         public string key => $"{name}_{this.GetInstanceID()}";
         public bool state => _isOn;
 
+        
         public const int EVENT_UPdATE = 0;
         public const int EVENT_COUNT = 1;
 
@@ -99,37 +113,13 @@ namespace GoogieFaderSystem
                 }
             }
 
-            if (useACL)
-            {
-                if (accessControl)
-                {
-                    accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                    accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
-
-                    _OnValidate();
-                }
-                else
-                {
-                    LogError("No access control set");
-                    DisableInteractive = true;
-                }
-            }
-
             _isOn = defaultValue;
             OnDeserialization();
         }
 
-        public void _OnValidate()
+        protected override void AccessChanged()
         {
-            // Log("_OnValidate");
-            var oldAuthorized = _isAuthorized;
-            _isAuthorized = accessControl._LocalHasAccess();
-            if (_isAuthorized != oldAuthorized)
-            {
-                Log($"setting isAuthorized to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
-            }
-
-            if (_isAuthorized)
+            if (isAuthorized)
             {
                 DisableInteractive = false;
                 if (button)
@@ -159,7 +149,7 @@ namespace GoogieFaderSystem
 
         public void SetState(bool newValue)
         {
-            if (useACL && !_isAuthorized) return;
+            if (useACL && !isAuthorized) return;
             if (!Networking.IsOwner(gameObject))
             {
                 Networking.SetOwner(Networking.LocalPlayer, gameObject);
@@ -182,19 +172,9 @@ namespace GoogieFaderSystem
             OnDeserialization();
         }
 
-        // // some magic that somehow.. works ?
-        // public void _UVR_Init()
-        // {
-        //     if (isAuthorized)
-        //     {
-        //         if (button != null) button.SetActive(true);
-        //         if (buttonCollider != null) buttonCollider.enabled = true;
-        //     }
-        // }
-
         public override void Interact()
         {
-            if (useACL && !_isAuthorized) return;
+            if (useACL && !isAuthorized) return;
 
             if (!Networking.IsOwner(gameObject))
             {
@@ -244,48 +224,10 @@ namespace GoogieFaderSystem
             _UpdateState();
         }
 
-        private const string logPrefix = "[GlobalToggleWithACL]";
-
-        private void LogError(string message)
-        {
-            Debug.LogError($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._WriteError(
-                    logPrefix,
-                    message
-                );
-            }
-        }
-
-        private void Log(string message)
-        {
-            Debug.Log($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
-            {
-                debugLog._Write(
-                    logPrefix,
-                    message
-                );
-            }
-        }
-
-        private string prevLabel;
-        private TextMeshPro prevTMPLabel;
+        [NonSerialized] private string prevLabel;
+        [NonSerialized] private TextMeshPro prevTMPLabel;
 
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
-        public AccessControl ACL
-        {
-            get => accessControl;
-            set => accessControl = value;
-        }
-
-        public DebugLog DebugLog
-        {
-            get => debugLog;
-            set => debugLog = value;
-        }
-
         private void OnValidate()
         {
             if (Application.isPlaying) return;
@@ -321,7 +263,7 @@ namespace GoogieFaderSystem
             if (!string.IsNullOrEmpty(label))
             {
                 InteractionText = label;
-                (this as UdonSharpBehaviour).MarkDirty();
+                this.MarkDirty();
                 // this.MarkDirty();
                 if (tmpLabel != null)
                 {

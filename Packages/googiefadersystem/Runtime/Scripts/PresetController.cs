@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Linq;
 using Texel;
 using UdonSharp;
@@ -79,9 +80,9 @@ namespace GoogieFaderSystem
             this.debugToggleValues = debugtoggleValues;
         }
 
-        private GameObject[] prevObjects;
-        private AccessControl prevAccessControl;
-        private bool childrenInitialized = false;
+        [NonSerialized] private GameObject[] prevObjects;
+        [NonSerialized] private AccessControl prevAccessControl;
+        [NonSerialized] private bool childrenInitialized = false;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
 
         private void OnValidate()
