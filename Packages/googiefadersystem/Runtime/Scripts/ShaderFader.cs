@@ -34,31 +34,39 @@ namespace GoogieFaderSystem
         [SerializeField] public Material[] targetMaterials;
         [SerializeField] public string materialPropertyId;
 
-        [Tooltip(("Value for reset"))] [SerializeField]
+        [Tooltip(("Value for reset")), 
+         SerializeField]
         public float defaultValue = 0; // Value for reset
 
-        [FormerlySerializedAs("valueMin")] [Tooltip(("minimum value"))] [SerializeField]
+        [FormerlySerializedAs("valueMin"),
+         Tooltip(("minimum value")),
+         SerializeField]
         public float minValue = 0; // Default minimum value
 
-        [FormerlySerializedAs("valueMax")] [Tooltip(("maximum value"))] [SerializeField]
+        [FormerlySerializedAs("valueMax"),
+         Tooltip(("maximum value")),
+         SerializeField]
         public float maxValue = 1; // Default maximum value
 
         [Header("Value Smoothing")] // header
-        [Tooltip(("smoothes out value updating, but can lower frames"))]
+        [Tooltip(("smoothes out value updating, but can lower frames")),
+         SerializeField]
         public bool enableValueSmoothing = false;
 
         [Tooltip(
-            "amount of frames to skip when smoothing the value, higher number == less load, but more choppy smoothing")]
+            "amount of frames to skip when smoothing the value, higher number == less load, but more choppy smoothing"),
+         SerializeField]
         public int smoothUpdateInterval = 5;
 
-        [Tooltip("rate at with the value moves towards new target a fixed duration")]
+        [Tooltip("fraction of the distance covered within roughly 1s"),
+         SerializeField]
         public float smoothingRate = 0.15f;
 
         [Header("Curve")] // header
         [Tooltip("If enabled, the curve below will be used to evaluate the slider value")]
         [SerializeField]
         protected bool useCurve;
-
+        
         [Tooltip("Requires \"Use Curve\" to be enabled. E.g. can be changed to be logarithmic for volume sliders.")]
         [SerializeField]
         protected AnimationCurve sliderCurve = AnimationCurve.Linear(0, 0, 1, 1);
@@ -95,8 +103,8 @@ namespace GoogieFaderSystem
         [SerializeField] public GameObject rightHandCollider;
 
         [SerializeField] private MeshRenderer handleRenderer;
-        [SerializeField] private GameObject leftLimiter;
-        [SerializeField] private GameObject rightLimiter;
+        [SerializeField] private Transform leftLimiter;
+        [SerializeField] private Transform rightLimiter;
 
         [Header("UI")] // header
         [SerializeField]
@@ -346,7 +354,7 @@ namespace GoogieFaderSystem
             if (!_isAuthorized) return;
             if (!_isDesktop) return;
             if (!_isHeld) return;
-            Log($"InputLookVertical {value} {args.handType}");
+            // Log($"InputLookVertical {value} {args.handType}");
 
             if (!_localPlayer.IsOwner(_faderHandle))
             {
@@ -419,7 +427,7 @@ namespace GoogieFaderSystem
             if (syncedValueNormalized != _lastSyncedValueNormalized)
             {
                 UpdatePositionToCurrentValue();
-                Log("OnDeserialization");
+                // Log("OnDeserialization");
                 _UpdateTargetFloat(syncedValueNormalized);
                 _lastSyncedValueNormalized = syncedValueNormalized;
                 // UpdateFaderPosition();
@@ -613,15 +621,22 @@ namespace GoogieFaderSystem
 
         private void _AssignValue(float normalizedValue)
         {
+            var remappedValue = normalizedValue;
+            if (useCurve)
+            {
+                remappedValue = sliderCurve.Evaluate(normalizedValue);
+                Log($"_AssignValue Evaluate curve {normalizedValue} => {remappedValue}");
+            }
+            
             localValue = Mathf.Lerp(
                 minValue,
                 maxValue,
-                useCurve ? sliderCurve.Evaluate(normalizedValue) : normalizedValue
+                remappedValue
             );
 
-            Log($"_AssignValue {normalizedValue} => {localValue}");
+            Log($"_AssignValue Lerp into range {remappedValue} => {localValue}");
 
-            if (tmpLabelValue && tmpLabelValue.isActiveAndEnabled)
+            if (tmpLabelValue && tmpLabelValue.enabled)
             {
                 tmpLabelValue.text = localValue.ToString(valueDisplayFormat);
             }
@@ -709,8 +724,7 @@ namespace GoogieFaderSystem
             UpdatePositionToCurrentValue();
             RequestSerialization();
         }
-
-
+        
         /// <summary>
         /// Normalizes the given value and evaluates it on a curve, then expands it back to the actual range.
         /// </summary>
@@ -749,9 +763,9 @@ namespace GoogieFaderSystem
             }
         }
 
-        private string prevMain;
-        private string prevSub;
-        private float prevDefaultValue;
+        [NonSerialized] private string prevMain;
+        [NonSerialized] private string prevSub;
+        [NonSerialized] private float prevDefaultValue;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
         private void OnValidate()
         {
@@ -794,12 +808,16 @@ namespace GoogieFaderSystem
             }
 
             _faderHandle = gameObject;
-            _leftLimit = leftLimiter.gameObject.transform.localPosition.x;
-            _rightLimit = rightLimiter.gameObject.transform.localPosition.x;
 
-            var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
-            syncedValueNormalized = normalizedDefault;
-            UpdatePositionToCurrentValue();
+            if (leftLimiter && rightLimiter)
+            {
+                _leftLimit = leftLimiter.gameObject.transform.localPosition.x;
+                _rightLimit = rightLimiter.gameObject.transform.localPosition.x;
+                var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
+                syncedValueNormalized = normalizedDefault;
+                UpdatePositionToCurrentValue();
+                syncedValueNormalized = 0f;
+            }
         }
 #endif
     }

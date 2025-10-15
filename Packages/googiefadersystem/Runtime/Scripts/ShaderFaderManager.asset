@@ -128,7 +128,7 @@ MonoBehaviour:
       Data: 8|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: LocalHandCollider, Assembly-CSharp
+      Data: LocalHandCollider, googiefadersystem
     - Name: 
       Entry: 8
       Data: 

@@ -103,8 +103,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 1255430029801305833}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 119099915723643375}
   tmpLabelSub: {fileID: 1822609596122835266}
   tmpLabelValue: {fileID: 4833338951872674730}
@@ -1232,8 +1232,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 6347905487667595236}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 4104372487092746834}
   tmpLabelSub: {fileID: 6741513933023943961}
   tmpLabelValue: {fileID: 4669868174398525114}
@@ -3104,8 +3104,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 1640512104743304993}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 8459802174821358400}
   tmpLabelSub: {fileID: 4177771244036987157}
   tmpLabelValue: {fileID: 3700021347380424114}
@@ -4485,8 +4485,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 3414940105305472208}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 4051498886721154005}
   tmpLabelSub: {fileID: 8030270518564569910}
   tmpLabelValue: {fileID: 622519034303948832}
@@ -5257,8 +5257,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 1201575038851663068}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 2088231775718760727}
   tmpLabelSub: {fileID: 1605855009443884497}
   tmpLabelValue: {fileID: 4009245290508658005}
@@ -8037,8 +8037,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 4383033298294026299}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 7115907816394231776}
   tmpLabelSub: {fileID: 4237281507885875465}
   tmpLabelValue: {fileID: 8635654068833909272}
@@ -9709,8 +9709,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 2439588524119497070}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 2285824407458403001}
   tmpLabelSub: {fileID: 6728990981259749202}
   tmpLabelValue: {fileID: 788193358932800958}
@@ -13144,8 +13144,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 6194267600700568322}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 6024339246498362649}
   tmpLabelSub: {fileID: 2913239251864923235}
   tmpLabelValue: {fileID: 4696178437366297298}
@@ -13654,8 +13654,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 7564899339414236852}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 2757287994346272664}
   tmpLabelSub: {fileID: 7052612724708867808}
   tmpLabelValue: {fileID: 3840467551117617965}
@@ -14736,8 +14736,8 @@ MonoBehaviour:
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 3075013120802440443}
-  leftLimiter: {fileID: 1581972055891275086}
-  rightLimiter: {fileID: 7681165501604102043}
+  leftLimiter: {fileID: 1686602442466038190}
+  rightLimiter: {fileID: 1159416682268845638}
   tmpLabelMain: {fileID: 503960934213372797}
   tmpLabelSub: {fileID: 2527422628673672718}
   tmpLabelValue: {fileID: 2923915547948464622}
