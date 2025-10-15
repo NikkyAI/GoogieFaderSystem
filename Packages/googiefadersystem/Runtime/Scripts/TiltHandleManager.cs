@@ -46,8 +46,8 @@ namespace GoogieFaderSystem
         {
             foreach (var handle in gameObject.GetComponentsInChildren<TiltHandle>(true))
             {
-                handle.accessControl = accessControl;
-                handle.debugLog = debugLog;
+                handle.ACL = accessControl;
+                handle.DebugLog = debugLog;
                 handle.MarkDirty();
             }
         }

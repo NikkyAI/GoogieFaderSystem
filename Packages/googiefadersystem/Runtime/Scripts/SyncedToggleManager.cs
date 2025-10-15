@@ -49,8 +49,8 @@ namespace GoogieFaderSystem
         {
             foreach (var toggle in gameObject.GetComponentsInChildren<SyncedToggle>(true))
             {
-                toggle.accessControl = accessControl;
-                toggle.debugLog = debugLog;
+                toggle.ACL = accessControl;
+                toggle.DebugLog = debugLog;
                 toggle.MarkDirty();
             }
         }

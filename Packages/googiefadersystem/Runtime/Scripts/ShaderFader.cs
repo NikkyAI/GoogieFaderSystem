@@ -31,63 +31,63 @@ namespace GoogieFaderSystem
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class ShaderFader : EventBase
     {
-        [SerializeField] public Material[] targetMaterials;
-        [SerializeField] public string materialPropertyId;
+        [SerializeField] private Material[] targetMaterials;
+        [SerializeField] private string materialPropertyId;
 
         [Tooltip(("Value for reset")), 
          SerializeField]
-        public float defaultValue = 0; // Value for reset
+        private float defaultValue = 0; // Value for reset
 
         [FormerlySerializedAs("valueMin"),
          Tooltip(("minimum value")),
          SerializeField]
-        public float minValue = 0; // Default minimum value
+        private float minValue = 0; // Default minimum value
 
         [FormerlySerializedAs("valueMax"),
          Tooltip(("maximum value")),
          SerializeField]
-        public float maxValue = 1; // Default maximum value
+        private float maxValue = 1; // Default maximum value
 
         [Header("Value Smoothing")] // header
         [Tooltip(("smoothes out value updating, but can lower frames")),
          SerializeField]
-        public bool enableValueSmoothing = false;
+        private bool enableValueSmoothing = false;
 
         [Tooltip(
             "amount of frames to skip when smoothing the value, higher number == less load, but more choppy smoothing"),
          SerializeField]
-        public int smoothUpdateInterval = 5;
+        private int smoothUpdateInterval = 5;
 
         [Tooltip("fraction of the distance covered within roughly 1s"),
          SerializeField]
-        public float smoothingRate = 0.15f;
+        private float smoothingRate = 0.15f;
 
         [Header("Curve")] // header
         [Tooltip("If enabled, the curve below will be used to evaluate the slider value")]
         [SerializeField]
-        protected bool useCurve;
+        private bool useCurve;
         
         [Tooltip("Requires \"Use Curve\" to be enabled. E.g. can be changed to be logarithmic for volume sliders.")]
         [SerializeField]
-        protected AnimationCurve sliderCurve = AnimationCurve.Linear(0, 0, 1, 1);
+        private AnimationCurve sliderCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
         [Header("Display & Labels")] // header
         [SerializeField]
-        public bool alwaysShowValue = false;
+        private bool alwaysShowValue = false;
 
         [Tooltip(
             "What the slider value will be formated as.\n- 0.0 means it will always at least show one digit with one decimal point\n- 00 means it will fill always be formated as two digits with no decimal point")]
         [SerializeField]
         private string valueDisplayFormat = "0.0";
 
-        [SerializeField] public string labelMain = "MAIN";
-        [SerializeField] public string labelSub = "SUB";
+        [SerializeField] private string labelMain = "MAIN";
+        [SerializeField] private string labelSub = "SUB";
 
         [Header("Vector 4")] // header
         [SerializeField]
         private bool assignVectorComponent = false;
 
-        [SerializeField] public int vectorIndex = 0;
+        [SerializeField] private int vectorIndex = 0;
 
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
@@ -96,33 +96,29 @@ namespace GoogieFaderSystem
 
         [Header("Internals")] // header
         [Tooltip("ACL used to check who can use the fader")]
-        [SerializeField]
-        public AccessControl accessControl;
+        [SerializeField] private AccessControl accessControl;
 
-        [SerializeField] public GameObject leftHandCollider;
-        [SerializeField] public GameObject rightHandCollider;
+        [SerializeField] private GameObject leftHandCollider;
+        [SerializeField] private GameObject rightHandCollider;
 
         [SerializeField] private MeshRenderer handleRenderer;
         [SerializeField] private Transform leftLimiter;
         [SerializeField] private Transform rightLimiter;
 
         [Header("UI")] // header
-        [SerializeField]
-        private TextMeshPro tmpLabelMain;
+        [SerializeField] private TextMeshPro tmpLabelMain;
 
         [SerializeField] private TextMeshPro tmpLabelSub;
         [SerializeField] private TextMeshPro tmpLabelValue;
 
         [Header("External")] // header
-        [SerializeField]
-        private UdonBehaviour externalBehaviour;
+        [SerializeField] private UdonBehaviour externalBehaviour;
 
         [SerializeField] private string externalFloat = "";
         [SerializeField] private string externalEvent = "";
 
         [Header("Debug")] // header
-        [SerializeField]
-        public DebugLog debugLog;
+        [SerializeField] private DebugLog debugLog;
         // [SerializeField] private DebugState debugState;
 
         [Header("State")] // header
@@ -169,6 +165,7 @@ namespace GoogieFaderSystem
         public const int EVENT_COUNT = 1;
 
         protected override int EventCount => EVENT_COUNT;
+
 
         // public void _InternalUpdateDebugState()
         // {
@@ -230,11 +227,11 @@ namespace GoogieFaderSystem
                 tmpLabelValue.enabled = alwaysShowValue;
             }
 
-            if (accessControl)
+            if (ACL)
             {
-                Log($"registered _OnValidate on {accessControl}");
-                accessControl._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
-                accessControl._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
+                Log($"registered _OnValidate on {ACL}");
+                ACL._Register(AccessControl.EVENT_VALIDATE, this, nameof(_OnValidate));
+                ACL._Register(AccessControl.EVENT_ENFORCE_UPDATE, this, nameof(_OnValidate));
 
                 _OnValidate();
                 Log($"setting isInteractable to {_isAuthorized} for {Networking.LocalPlayer.displayName}");
@@ -260,7 +257,7 @@ namespace GoogieFaderSystem
         {
             // Log("_OnValidate");
             var oldAuthorized = _isAuthorized;
-            _isAuthorized = accessControl._LocalHasAccess();
+            _isAuthorized = ACL._LocalHasAccess();
             if (_isAuthorized != oldAuthorized)
             {
                 Log($"setting isAuthorized to {_isAuthorized} for {_localPlayer.displayName}");
@@ -287,7 +284,7 @@ namespace GoogieFaderSystem
             OnDeserialization();
         }
 
-        public void UpdateValueDisplay()
+        private void UpdateValueDisplay()
         {
             if (tmpLabelValue)
             {
@@ -767,6 +764,27 @@ namespace GoogieFaderSystem
         [NonSerialized] private string prevSub;
         [NonSerialized] private float prevDefaultValue;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
+        public AccessControl ACL
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+        public DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
+        public GameObject LeftHandCollider
+        {
+            get => leftHandCollider;
+            set => leftHandCollider = value;
+        }
+        public GameObject RightHandCollider
+        {
+            get => rightHandCollider;
+            set => rightHandCollider = value;
+        }
+        
         private void OnValidate()
         {
             if (Application.isPlaying) return;

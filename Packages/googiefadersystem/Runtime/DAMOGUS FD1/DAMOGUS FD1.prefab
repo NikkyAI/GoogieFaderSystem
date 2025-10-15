@@ -274,12 +274,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8679863309181789771}
-  targetsOn:
-  - {fileID: 1448776911162267179}
-  - {fileID: 0}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 2338655000820776783}
   defaultValue: 1
   offIfNotUsable: 0
   label: MAIN POWER
@@ -2787,11 +2781,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 6650838671259409496}
-  targetsOn:
-  - {fileID: 8351063511644357888}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 9147393941412740465}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -5511,11 +5500,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 5709980083468796778}
-  targetsOn:
-  - {fileID: 3729299091080846905}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 749622051069623511}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -6525,11 +6509,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2919555825544421562}
-  targetsOn:
-  - {fileID: 6841744665764836983}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 7863651333687683492}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -6827,11 +6806,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 555555657889196147}
-  targetsOn:
-  - {fileID: 4486118360546854156}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 8785187267515894599}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -7041,11 +7015,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8567572908719375983}
-  targetsOn:
-  - {fileID: 8059284958427477664}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 7363749031179263069}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -10880,11 +10849,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 7320236309129741967}
-  targetsOn:
-  - {fileID: 4942889978258537769}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 1410666044041371085}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -12402,11 +12366,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 4948436603173481630}
-  targetsOn:
-  - {fileID: 1217354717998644803}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 7358510649984966247}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -13908,11 +13867,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 7358843664372808860}
-  targetsOn:
-  - {fileID: 3938910284345733962}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 6448132084744659778}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -14293,11 +14247,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 4386293936937211072}
-  targetsOn:
-  - {fileID: 2967057883286569483}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 4045571493582973695}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -14507,11 +14456,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8087086383382619246}
-  targetsOn:
-  - {fileID: 5243183382730794957}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 3780767219681244399}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -15215,11 +15159,9 @@ MonoBehaviour:
   defaultValue: -66
   valueMin: -90
   valueMax: -30
-  currentValue: -66
   debugLog: {fileID: 0}
   accessControl: {fileID: 0}
   hinge: {fileID: 938757083316829274}
-  isAuthorized: 0
 --- !u!65 &1280891893556443432
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15521,11 +15463,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 7187360781795384292}
-  targetsOn:
-  - {fileID: 407765431337979168}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 8138815080959899983}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -16155,11 +16092,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 3011306807981516741}
-  targetsOn:
-  - {fileID: 5931881814328616496}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 2321781386703760284}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -17748,11 +17680,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2539852945076904376}
-  targetsOn:
-  - {fileID: 2046625915072940780}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 5813204242983050292}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
@@ -19497,11 +19424,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1754073907736381806}
-  targetsOn:
-  - {fileID: 4436642146085676361}
-  - {fileID: 0}
-  targetsOff:
-  - {fileID: 5191754827127212797}
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL

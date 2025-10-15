@@ -1,5 +1,4 @@
-﻿
-using Texel;
+﻿using Texel;
 using UdonSharp;
 using UnityEngine;
 using VRC;
@@ -12,41 +11,44 @@ namespace GoogieFaderSystem
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class TiltHandle : UdonSharpBehaviour
     {
-        [Tooltip(("Value for reset"))] [SerializeField]
-        public float defaultValue = -70; // Value for reset
+        [Tooltip(("Value for reset")),
+         SerializeField]
+        private float defaultValue = -70; // Value for reset
 
-        [Tooltip(("minimum value"))] [SerializeField]
-        public float valueMin = -90; // Default minimum value
+        [Tooltip(("minimum value")),
+         SerializeField]
+        private float valueMin = -90; // Default minimum value
 
-        [Tooltip(("maximum value"))] [SerializeField]
-        public float valueMax = -45; // Default maximum value
+        [Tooltip(("maximum value")),
+         SerializeField]
+        private float valueMax = -45; // Default maximum value
 
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
         // [SerializeField]
-        private float desktopDampening = 25;
-        
-        [Header("State")]
-        [UdonSynced] public float currentValue = 0;
-        
-        [Header("Debug")]
-        [SerializeField]
-        internal DebugLog debugLog;
-        // [SerializeField] DebugState debugState;
-        
-        [Header("Internals")] 
-        [Tooltip("ACL used to check who can use the fader")] 
-        [SerializeField]
-        internal AccessControl accessControl;
-        [SerializeField] GameObject hinge;
+        private const float desktopDampening = 25;
 
-        [UdonSynced(UdonSyncMode.NotSynced)]
-        public bool isAuthorized = false; // should be set by whitelist and false by default
+        [Header("State")] // header
+        [UdonSynced] private float syncedValue = 0;
+
+        [Header("Debug")] // header
+        [SerializeField] private DebugLog debugLog;
+        // [SerializeField] DebugState debugState;
+
+        [Header("Internals")]  // header
+        [Tooltip("ACL used to check who can use the fader"), 
+         SerializeField]
+        private AccessControl accessControl;
+
+        [SerializeField] private GameObject hinge;
+
+        // [UdonSynced(UdonSyncMode.NotSynced)]
+        private bool isAuthorized = false; // should be set by whitelist and false by default
 
         private VRCPlayerApi _localPlayer;
         private float _lastValue;
         private bool isHeld;
-        
+
         void Start()
         {
             DisableInteractive = true;
@@ -66,12 +68,12 @@ namespace GoogieFaderSystem
             //     debugState._Register(DebugState.EVENT_UPDATE, this, nameof(_InternalUpdateDebugState));
             //     debugState._SetContext(this, nameof(_InternalUpdateDebugState), "ShaderFader." + materialPropertyId);
             // }
-            
+
             Reset();
             OnDeserialization();
         }
-        
-        
+
+
         public void _OnValidate()
         {
             // Log("_OnValidate");
@@ -91,7 +93,7 @@ namespace GoogieFaderSystem
                 DisableInteractive = true;
             }
         }
-        
+
         private bool _AccessCheck()
         {
             if (!Utilities.IsValid(accessControl))
@@ -101,9 +103,9 @@ namespace GoogieFaderSystem
 
         public override void OnDeserialization()
         {
-            if (currentValue != _lastValue)
+            if (syncedValue != _lastValue)
             {
-                _lastValue = currentValue;
+                _lastValue = syncedValue;
                 UpdateHingeTilt();
             }
         }
@@ -120,6 +122,7 @@ namespace GoogieFaderSystem
             {
                 Networking.SetOwner(_localPlayer, gameObject);
             }
+
             Log("Interact");
             isHeld = true;
         }
@@ -137,22 +140,24 @@ namespace GoogieFaderSystem
                 isHeld = false;
             }
         }
-        
+
         public override void InputLookVertical(float value, UdonInputEventArgs args)
         {
             if (!isAuthorized)
             {
                 return;
             }
+
             if (!isHeld)
             {
                 return;
             }
+
             Log($"InputLookVertical {value} {args.handType}");
 
             var offset = (valueMax - valueMin) * value / desktopDampening;
-            
-            currentValue = Mathf.Clamp(currentValue + offset, valueMin, valueMax);
+
+            syncedValue = Mathf.Clamp(syncedValue + offset, valueMin, valueMax);
             RequestSerialization();
             OnDeserialization();
         }
@@ -161,11 +166,11 @@ namespace GoogieFaderSystem
         {
             // Create the new position vector for the slider object
             Quaternion newRot = Quaternion.Euler(
-                currentValue,
+                syncedValue,
                 hinge.transform.localRotation.y,
                 hinge.transform.localRotation.z
             );
-            
+
             hinge.transform.localRotation = newRot;
 
             // // Set the slider object's position to newPos
@@ -174,13 +179,13 @@ namespace GoogieFaderSystem
 
         public void Reset()
         {
-            currentValue = defaultValue;
+            syncedValue = defaultValue;
             RequestSerialization();
 
             UpdateHingeTilt();
             Log($"Reset tilt to {defaultValue}");
         }
-        
+
         private const string logPrefix = "[<color=#0C00FF>TiltHandle</color>]";
 
         private void Log(string text)
@@ -194,10 +199,21 @@ namespace GoogieFaderSystem
                 );
             }
         }
-        
+
         private float prevDefault;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
 
+        public AccessControl ACL
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+
+        public DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
         private void OnValidate()
         {
             if (Application.isPlaying) return;
@@ -216,7 +232,7 @@ namespace GoogieFaderSystem
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
 
-            currentValue = defaultValue;
+            syncedValue = defaultValue;
             UpdateHingeTilt();
             this.MarkDirty();
             hinge.transform.MarkDirty();

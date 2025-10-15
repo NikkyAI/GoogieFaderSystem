@@ -13,17 +13,18 @@ namespace GoogieFaderSystem
     public class SyncedToggle : EventBase
     {
 
-        [FormerlySerializedAs("_targets")] public GameObject[] targetsOn = { null, null };
-        [FormerlySerializedAs("_targets2")] public GameObject[] targetsOff = { null };
+        [FormerlySerializedAs("_targets")] private GameObject[] targetsOn = { null, null };
+        [FormerlySerializedAs("_targets2")] private GameObject[] targetsOff = { null };
 
-        [Tooltip("The button will initialize into this value, toggle this for elements that should be enabled by default")]
-        [SerializeField]
+        [Tooltip("The button will initialize into this value, toggle this for elements that should be enabled by default"),
+         SerializeField]
         private bool defaultValue = false;
 
-        [Tooltip("If the user cannot use the button, it will not be visible if this is set to True.")] [SerializeField]
+        [Tooltip("If the user cannot use the button, it will not be visible if this is set to True."),
+         SerializeField]
         private bool offIfNotUsable = false;
 
-        [SerializeField] public string label;
+        [SerializeField] private string label;
 
         [Header("UI")] // header
         [SerializeField]
@@ -31,8 +32,9 @@ namespace GoogieFaderSystem
 
         [Header("Access Control")] // header
         [SerializeField] private bool useACL = true;
-        [Tooltip("ACL used to check who can use the toggle")]
-        public AccessControl accessControl;
+        [Tooltip("ACL used to check who can use the toggle"),
+         SerializeField]
+        private AccessControl accessControl;
         
         [Header("External")] // header
         [SerializeField]
@@ -42,7 +44,7 @@ namespace GoogieFaderSystem
         [SerializeField] private string externalEvent = "";
 
         [Header("Debug")] // header
-        public DebugLog debugLog;
+        [SerializeField] private DebugLog debugLog;
 
         [Header("Backend")] // header
         [Tooltip(
@@ -242,9 +244,9 @@ namespace GoogieFaderSystem
         private void LogError(string message)
         {
             Debug.LogError($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
+            if (Utilities.IsValid(DebugLog))
             {
-                debugLog._WriteError(
+                DebugLog._WriteError(
                     logPrefix,
                     message
                 );
@@ -254,9 +256,9 @@ namespace GoogieFaderSystem
         private void Log(string message)
         {
             Debug.Log($"{logPrefix} {message}");
-            if (Utilities.IsValid(debugLog))
+            if (Utilities.IsValid(DebugLog))
             {
-                debugLog._Write(
+                DebugLog._Write(
                     logPrefix,
                     message
                 );
@@ -267,6 +269,17 @@ namespace GoogieFaderSystem
         private TextMeshPro prevTMPLabel;
 
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
+        public AccessControl ACL
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+
+        public DebugLog DebugLog
+        {
+            get => debugLog;
+            set => debugLog = value;
+        }
 
         private void OnValidate()
         {

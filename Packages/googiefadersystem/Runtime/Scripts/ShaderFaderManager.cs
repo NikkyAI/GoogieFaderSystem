@@ -60,12 +60,12 @@ namespace GoogieFaderSystem
         {
             foreach (var fader in gameObject.GetComponentsInChildren<ShaderFader>(true))
             {
-                fader.accessControl = accessControl;
-                fader.debugLog = debugLog;
+                fader.ACL = accessControl;
+                fader.DebugLog = debugLog;
                 if (localHandCollider)
                 {
-                    fader.leftHandCollider = localHandCollider.leftHandCollider;
-                    fader.rightHandCollider = localHandCollider.rightHandCollider;
+                    fader.LeftHandCollider = localHandCollider.leftHandCollider;
+                    fader.RightHandCollider = localHandCollider.rightHandCollider;
                 }
 
                 fader.MarkDirty();
