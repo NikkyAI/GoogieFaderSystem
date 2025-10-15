@@ -196,8 +196,9 @@ namespace GoogieFaderSystem
             _uid = gameObject.GetInstanceID();
             _localPlayer = Networking.LocalPlayer;
             _isDesktop = !_localPlayer.IsUserInVR();
-            _leftLimit = leftLimiter.gameObject.transform.localPosition.x;
-            _rightLimit = rightLimiter.gameObject.transform.localPosition.x;
+            _leftLimit = leftLimiter.gameObject.transform.localPosition.z;
+            _rightLimit = rightLimiter.gameObject.transform.localPosition.z;
+            Log($"limits: {_leftLimit} .. {_rightLimit}");
             if (handleRenderer == null)
             {
                 handleRenderer = _faderHandle.GetComponent<MeshRenderer>();
@@ -451,12 +452,12 @@ namespace GoogieFaderSystem
                 // Log($"transform.position {localHandPos} {handData.localPosition}");
                 // var localHandPos = handData.localPosition;
 
-                float handPosX = localHandPos.x;
-                float clampedPosX = Mathf.Clamp(handPosX, _leftLimit, _rightLimit); // Clamp position within limits
+                float handPosZ = localHandPos.z;
+                float clampedPosZ = Mathf.Clamp(handPosZ, _leftLimit, _rightLimit); // Clamp position within limits
 
                 // TODO: trying out this simpler code for copying over y and z components
                 Vector3 newPos = _faderHandle.transform.localPosition;
-                newPos.x = clampedPosX;
+                newPos.z = clampedPosZ;
                 // Vector3 newPos = new Vector3(
                 // clampedPosX,
                 // _faderHandle.transform.localPosition.y,
@@ -468,7 +469,7 @@ namespace GoogieFaderSystem
                 // transform.worldToLocalMatrix.MultiplyVector(handData.position);
 
                 // Normalize the slider position to a value between 0 and 1
-                float normalizedValue = Mathf.InverseLerp(_leftLimit, _rightLimit, clampedPosX);
+                float normalizedValue = Mathf.InverseLerp(_leftLimit, _rightLimit, clampedPosZ);
 
                 // Map the normalized value to the arbitrary range
                 // syncedValueNormalized = Mathf.Lerp(minValue, maxValue, normalizedValue);
@@ -695,13 +696,15 @@ namespace GoogieFaderSystem
 
             // Use t to find the corresponding xPos between LeftLimit and RightLimit
             // float xPos = _leftLimit + (_rightLimit - _leftLimit) * t;
-            float xPos = Mathf.Lerp(_leftLimit, _rightLimit, syncedValueNormalized);
+            float zPos = Mathf.Lerp(_leftLimit, _rightLimit, syncedValueNormalized);
             // Create the new position vector for the slider object
-            Vector3 newPos = new Vector3(
-                xPos,
-                _faderHandle.transform.localPosition.y,
-                _faderHandle.transform.localPosition.z
-            );
+            Vector3 newPos = _faderHandle.transform.localPosition;
+            newPos.z = zPos;
+            // Vector3 newPos = new Vector3(
+            //     _faderHandle.transform.localPosition.x,
+            //     _faderHandle.transform.localPosition.y,
+            //     zPos
+            // );
 
             // Set the slider object's position to newPos
             // _sliderPosition = newPos;
@@ -831,8 +834,8 @@ namespace GoogieFaderSystem
 
             if (leftLimiter && rightLimiter)
             {
-                _leftLimit = leftLimiter.gameObject.transform.localPosition.x;
-                _rightLimit = rightLimiter.gameObject.transform.localPosition.x;
+                _leftLimit = leftLimiter.gameObject.transform.localPosition.z;
+                _rightLimit = rightLimiter.gameObject.transform.localPosition.z;
                 var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
                 syncedValueNormalized = normalizedDefault;
                 UpdatePositionToCurrentValue();

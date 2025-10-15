@@ -68,6 +68,7 @@ namespace GoogieFaderSystem
                     fader.RightHandCollider = localHandCollider.rightHandCollider;
                 }
 
+                fader.ApplyValues();
                 fader.MarkDirty();
             }
         }

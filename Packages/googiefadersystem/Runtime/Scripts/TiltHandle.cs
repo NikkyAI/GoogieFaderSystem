@@ -1,4 +1,5 @@
-﻿using Texel;
+﻿using System.Numerics;
+using Texel;
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -6,6 +7,8 @@ using VRC;
 using VRC.SDKBase;
 using VRC.Udon;
 using VRC.Udon.Common;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace GoogieFaderSystem
 {
@@ -14,15 +17,15 @@ namespace GoogieFaderSystem
     {
         [Tooltip(("Value for reset")),
          SerializeField]
-        private float defaultAngle = -70; // Value for reset
+        private float defaultAngle = 20; // Value for reset
 
         [Tooltip(("minimum value")),
          SerializeField]
-        private float minAngle = -90; // Default minimum value
+        private float minAngle = 0; // Default minimum value
 
         [Tooltip(("maximum value")),
          SerializeField]
-        private float maxAngle = -45; // Default maximum value
+        private float maxAngle = 45; // Default maximum value
 
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
@@ -168,8 +171,9 @@ namespace GoogieFaderSystem
             var relativePos = baseTransform.transform.InverseTransformPoint(pickup.transform.position);
             relativePos.x = 0;
             
-            var angle = -Vector3.Angle(Vector3.up, relativePos);
-            syncedValue = Mathf.Clamp(maxAngle, minAngle, angle);
+            // var angle = Vector3.Angle(Vector3.forward, relativePos);
+            var angle = Vector3.Angle(relativePos, Vector3.forward);
+            syncedValue = Mathf.Clamp(angle, minAngle, maxAngle);
             Log($"angle: {angle} -> {syncedValue}");
             
             RequestSerialization();
@@ -237,7 +241,7 @@ namespace GoogieFaderSystem
         {
             // Create the new position vector for the slider object
             Quaternion newRot = Quaternion.Euler(
-                syncedValue,
+                -syncedValue,
                 hingeTransform.transform.localRotation.y,
                 hingeTransform.transform.localRotation.z
             );
