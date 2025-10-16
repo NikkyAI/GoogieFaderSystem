@@ -720,6 +720,11 @@ namespace GoogieFaderSystem
         {
             if (!isAuthorized) return;
 
+            if (!_localPlayer.IsOwner(_faderHandle))
+            {
+                Networking.SetOwner(_localPlayer, _faderHandle);
+            }
+
             valueInitialized = false; // forces it to skip smoothing
             var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
             syncedValueNormalized = normalizedDefault;
