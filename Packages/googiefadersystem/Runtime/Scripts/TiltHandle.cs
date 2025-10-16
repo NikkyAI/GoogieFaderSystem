@@ -63,6 +63,8 @@ namespace GoogieFaderSystem
 
         [SerializeField] private PickupTrigger pickupTrigger;
         private VRC_Pickup pickup;
+        private Rigidbody pickupRigidBody;
+        private Transform pickupReset;
 
         private VRCPlayerApi _localPlayer;
         private float _lastValue;
@@ -89,6 +91,12 @@ namespace GoogieFaderSystem
             {
                 LogError("missing pickup");
             }
+
+            pickupRigidBody = pickup.GetComponent<Rigidbody>();
+            pickupRigidBody.useGravity = false;
+            pickupRigidBody.isKinematic = false;
+            pickupReset = transform;
+            pickup.transform.SetPositionAndRotation(pickupReset.position, pickupReset.rotation);
 
             if (hingeTransform)
             {
@@ -150,7 +158,9 @@ namespace GoogieFaderSystem
             isHeld = false;
 
             Log("handle released, resetting position");
-            pickup.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            pickupRigidBody.angularVelocity = Vector3.zero;
+            pickupRigidBody.velocity = Vector3.zero;
+            pickup.transform.SetPositionAndRotation(pickupReset.position, pickupReset.rotation);
         }
 
         public void FollowPickup()

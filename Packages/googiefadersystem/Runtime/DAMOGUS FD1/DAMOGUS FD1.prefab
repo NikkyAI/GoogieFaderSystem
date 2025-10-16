@@ -11326,7 +11326,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.006536126, z: 0.1427033}
   m_LocalScale: {x: 0.05, y: 0.049999993, z: 0.049999993}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7694385641147673863}
   m_Father: {fileID: 5159206245699078258}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6771275559980909154
@@ -13084,10 +13085,9 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.03399992, y: 0.028263092, z: 0.35104752}
-  m_LocalScale: {x: 0.7, y: -0.009999998, z: -0.009999998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7694385641147673863}
+  m_Children: []
   m_Father: {fileID: 5786227007865423616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2231658665983369333
@@ -15271,6 +15271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7694385641147673863}
+  - component: {fileID: 2959696414140945463}
   - component: {fileID: 1280891893556443432}
   - component: {fileID: 3137632739695136406}
   - component: {fileID: 6012889859613384868}
@@ -15291,13 +15292,21 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6332702445345178105}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.8191521, y: -0, z: -0, w: 0.57357645}
+  m_LocalPosition: {x: -0.6799984, y: 3.5501387, z: -3.0632029}
+  m_LocalScale: {x: 14, y: 0.3, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 939418725858253001}
+  m_Father: {fileID: 1084351279877258102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2959696414140945463
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332702445345178105}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &1280891893556443432
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15317,7 +15326,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 3, z: 1}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3137632739695136406
 Rigidbody:
@@ -15341,10 +15350,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 98
   m_CollisionDetection: 0
 --- !u!114 &6012889859613384868
 MonoBehaviour:
