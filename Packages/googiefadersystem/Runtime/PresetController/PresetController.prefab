@@ -13756,7 +13756,7 @@ PrefabInstance:
     - target: {fileID: 5643505575921424455, guid: 75166db9199a4ab459a1a269ada987ba,
         type: 3}
       propertyPath: title
-      value: Toogle States
+      value: Toggle States
       objectReference: {fileID: 0}
     - target: {fileID: 5643505575921424455, guid: 75166db9199a4ab459a1a269ada987ba,
         type: 3}
