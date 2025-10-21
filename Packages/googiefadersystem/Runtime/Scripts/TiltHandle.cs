@@ -8,6 +8,7 @@ using VRC;
 using VRC.SDKBase;
 using VRC.Udon;
 using VRC.Udon.Common;
+using VRC.Udon.Common.Interfaces;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -28,43 +29,56 @@ namespace GoogieFaderSystem
          SerializeField]
         private float maxAngle = 45; // Default maximum value
 
+        [SerializeField] private bool invertAngle = false;
+
+        [SerializeField] private Axis rotationAxis = Axis.X;
+
+        [SerializeField] private Vector3 forwardVector = Vector3.forward;
+
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
         // [SerializeField]
         private const float desktopDampening = 25;
 
         [Header("State")] // header
-        [UdonSynced] private float syncedValue = 0;
+        [UdonSynced]
+        private float syncedValue = 0;
+
         public float SyncedValue => syncedValue;
 
         [Header("Debug")] // header
-        [SerializeField] private DebugLog debugLog;
+        [SerializeField]
+        private DebugLog debugLog;
+
         protected override DebugLog DebugLog
         {
             get => debugLog;
             set => debugLog = value;
         }
+
         protected override string LogPrefix => nameof(TiltHandle);
         // [SerializeField] DebugState debugState;
 
-        [Header("Internals")]  // header
-        [Tooltip("ACL used to check who can use the fader"), 
+        [Header("Internals")] // header
+        [Tooltip("ACL used to check who can use the fader"),
          SerializeField]
         private AccessControl accessControl;
+
         protected override AccessControl AccessControl
         {
             get => accessControl;
             set => accessControl = value;
         }
+
         protected override bool UseACL => true;
 
         [SerializeField] private Transform hingeTransform;
-        private Transform baseTransform;
+        [SerializeField] private Transform hingeBase;
 
         [SerializeField] private PickupTrigger pickupTrigger;
         private VRC_Pickup pickup;
         private Rigidbody pickupRigidBody;
-        private Transform pickupReset;
+        [SerializeField] private Transform pickupReset;
 
         private VRCPlayerApi _localPlayer;
         private float _lastValue;
@@ -80,6 +94,11 @@ namespace GoogieFaderSystem
             DisableInteractive = true;
             _localPlayer = Networking.LocalPlayer;
 
+            if (pickupTrigger == null)
+            {
+                pickupTrigger = gameObject.GetComponent<PickupTrigger>();
+            }
+
             if (pickupTrigger)
             {
                 pickup = pickupTrigger.GetComponent<VRC_Pickup>();
@@ -89,18 +108,52 @@ namespace GoogieFaderSystem
             }
             else
             {
-                LogError("missing pickup");
+                LogError("missing pickup trigger");
+            }
+
+            if (pickup == null)
+            {
+                pickup = gameObject.GetComponent<VRC_Pickup>();
             }
 
             pickupRigidBody = pickup.GetComponent<Rigidbody>();
             pickupRigidBody.useGravity = false;
             pickupRigidBody.isKinematic = false;
-            pickupReset = transform;
+            if (pickupReset == null)
+            {
+                pickupReset = transform;
+            }
+
             pickup.transform.SetPositionAndRotation(pickupReset.position, pickupReset.rotation);
 
             if (hingeTransform)
             {
-                baseTransform = hingeTransform.parent;
+                // hingeBase = hingeTransform;
+                // hingeBase.rotation = Quaternion.FromToRotation(Vector3.zero, forwardVector);
+                // if (rotationAxis == Axis.X)
+                // {
+                //     hingeBase.localRotation = Quaternion.Euler(
+                //         0,
+                //         hingeTransform.localEulerAngles.y,
+                //         hingeTransform.localEulerAngles.z
+                //     );
+                // }
+                // else if (rotationAxis == Axis.Y)
+                // {
+                //     hingeBase.localRotation = Quaternion.Euler(
+                //         hingeTransform.localEulerAngles.x,
+                //         0,
+                //         hingeTransform.localEulerAngles.z
+                //     );
+                // }
+                // else if (rotationAxis == Axis.Z)
+                // {
+                //     hingeBase.localRotation = Quaternion.Euler(
+                //         hingeTransform.localEulerAngles.x,
+                //         hingeTransform.localEulerAngles.y,
+                //         0
+                //     );
+                // }
             }
             else
             {
@@ -143,12 +196,12 @@ namespace GoogieFaderSystem
                 Log("already being adjusted");
                 return;
             }
-            
+
             if (!_localPlayer.IsOwner(gameObject))
             {
                 Networking.SetOwner(_localPlayer, gameObject);
             }
-            
+
             isHeld = true;
             this.SendCustomEventDelayedFrames(nameof(FollowPickup), 5);
         }
@@ -157,6 +210,17 @@ namespace GoogieFaderSystem
         {
             isHeld = false;
 
+
+            if (!_localPlayer.IsOwner(gameObject))
+            {
+                Networking.SetOwner(_localPlayer, gameObject);
+            }
+
+            SendCustomNetworkEvent(NetworkEventTarget.All, nameof(ResetPosition));
+        }
+
+        public void ResetPosition()
+        {
             Log("handle released, resetting position");
             pickupRigidBody.angularVelocity = Vector3.zero;
             pickupRigidBody.velocity = Vector3.zero;
@@ -166,14 +230,30 @@ namespace GoogieFaderSystem
         public void FollowPickup()
         {
             if (!isHeld) return;
-            var relativePos = baseTransform.transform.InverseTransformPoint(pickup.transform.position);
-            relativePos.x = 0;
+
             
+            var relativePos = hingeBase.transform.InverseTransformPoint(pickup.transform.position);
+            if (rotationAxis == Axis.X)
+            {
+                relativePos.x = 0;
+            }
+            else if (rotationAxis == Axis.Y)
+            {
+                relativePos.y = 0;
+            }
+            else if (rotationAxis == Axis.Z)
+            {
+                relativePos.z = 0;
+            }
+
             // var angle = Vector3.Angle(Vector3.forward, relativePos);
-            var angle = Vector3.Angle(relativePos, Vector3.forward);
+            // var angle = Vector3.Angle(relativePos, forwardVector);
+            // Log($"Angle({relativePos}, {forwardVector}) => {angle}");
+            var angle = Vector3.Angle(forwardVector, relativePos);
+            Log($"Angle({forwardVector}, {relativePos}) => {angle}");
             syncedValue = Mathf.Clamp(angle, minAngle, maxAngle);
             Log($"angle: {angle} -> {syncedValue}");
-            
+
             RequestSerialization();
             OnDeserialization();
 
@@ -238,11 +318,44 @@ namespace GoogieFaderSystem
         private void UpdateHingeTilt()
         {
             // Create the new position vector for the slider object
+
+
             Quaternion newRot = Quaternion.Euler(
-                -syncedValue,
+                hingeTransform.transform.localRotation.x,
                 hingeTransform.transform.localRotation.y,
                 hingeTransform.transform.localRotation.z
             );
+
+            var angle = syncedValue;
+            if (invertAngle)
+            {
+                angle = -angle;
+            }
+
+            if (rotationAxis == Axis.X)
+            {
+                newRot = Quaternion.Euler(
+                    angle,
+                    hingeTransform.transform.localRotation.y,
+                    hingeTransform.transform.localRotation.z
+                );
+            }
+            else if (rotationAxis == Axis.Y)
+            {
+                newRot = Quaternion.Euler(
+                    hingeTransform.transform.localRotation.x,
+                    angle,
+                    hingeTransform.transform.localRotation.z
+                );
+            }
+            else if (rotationAxis == Axis.Z)
+            {
+                newRot = Quaternion.Euler(
+                    hingeTransform.transform.localRotation.x,
+                    hingeTransform.transform.localRotation.y,
+                    angle
+                );
+            }
 
             hingeTransform.transform.localRotation = newRot;
 
@@ -261,6 +374,7 @@ namespace GoogieFaderSystem
 
         [NonSerialized] private float prevDefault;
         [NonSerialized] private PickupTrigger prevPickupTrigger;
+        [NonSerialized] private Vector3 prevResetPos;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
         public override AccessControl EditorACL
         {
@@ -281,11 +395,13 @@ namespace GoogieFaderSystem
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
             //TODO: check on localTransforms too
-            if (prevDefault == defaultAngle && pickupTrigger == prevPickupTrigger)
+            if (prevDefault == defaultAngle && pickupTrigger == prevPickupTrigger && pickupReset?.transform.localPosition == prevResetPos)
                 return; // To prevent trying to apply the theme to often, as without it every single change in the scene causes it to be applied
-            prevDefault = defaultAngle;
-
             ApplyValues();
+            prevDefault = defaultAngle;
+            prevPickupTrigger = pickupTrigger;
+            if(pickupReset)
+                prevResetPos = pickupReset.localPosition;
         }
 
         [ContextMenu("Apply Values")]
@@ -299,9 +415,25 @@ namespace GoogieFaderSystem
 
             syncedValue = defaultAngle;
             UpdateHingeTilt();
+            if (pickupTrigger == null)
+            {
+                pickupTrigger = gameObject.GetComponent<PickupTrigger>();
+            }
+            if (pickupTrigger)
+            {
+                pickup = pickupTrigger.GetComponent<VRC_Pickup>();
+                pickupTrigger.accessControl = accessControl;
+                pickupTrigger.MarkDirty();
+            }
+            pickupRigidBody = pickup.GetComponent<Rigidbody>();
+            
+            if (pickupReset == null)
+            {
+                pickupReset = transform;
+            }
+            ResetPosition();
             this.MarkDirty();
             hingeTransform.transform.MarkDirty();
-            
         }
 #endif
     }

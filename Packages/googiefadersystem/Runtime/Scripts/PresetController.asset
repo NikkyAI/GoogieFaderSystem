@@ -197,7 +197,7 @@ MonoBehaviour:
       Data: 13|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: GoogieFaderSystem.ShaderFader[], googiefadersystem
+      Data: GoogieFaderSystem.Fader[], googiefadersystem
     - Name: 
       Entry: 8
       Data: 

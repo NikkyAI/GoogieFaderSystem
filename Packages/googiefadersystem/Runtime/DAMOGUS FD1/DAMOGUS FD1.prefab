@@ -105,9 +105,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 1255430029801305833}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 119099915723643375}
   tmpLabelSub: {fileID: 1822609596122835266}
-  tmpLabelValue: {fileID: 4833338951872674730}
+  tmpLabelValueActual: {fileID: 4833338951872674730}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -289,8 +291,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 136955126838364468}
-  buttonCollider: {fileID: 5705550470031252833}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &8679863309181789771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +731,13 @@ MonoBehaviour:
   - {fileID: 2025200298179125825}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &2909164303719804003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,6 +1130,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 939418725858253001}
   - {fileID: 1831195724595033947}
   - {fileID: 5606304717256453706}
   - {fileID: 1915771157979483423}
@@ -1127,9 +1138,8 @@ Transform:
   - {fileID: 358512622376735257}
   - {fileID: 5144537399165523608}
   - {fileID: 4003701678757062256}
-  - {fileID: 939418725858253001}
   m_Father: {fileID: 5159206245699078258}
-  m_LocalEulerAnglesHint: {x: -20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
 --- !u!1 &1005736421381962650
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,9 +1245,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 6347905487667595236}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 4104372487092746834}
   tmpLabelSub: {fileID: 6741513933023943961}
-  tmpLabelValue: {fileID: 4669868174398525114}
+  tmpLabelValueActual: {fileID: 4669868174398525114}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -1604,7 +1616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.04279995}
+  m_AnchoredPosition: {x: 0.19260006, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2813777871611311903
@@ -2803,8 +2815,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 1582830667827724048}
-  buttonCollider: {fileID: 6149302550638279227}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &6650838671259409496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3107,9 +3121,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 1640512104743304993}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 8459802174821358400}
   tmpLabelSub: {fileID: 4177771244036987157}
-  tmpLabelValue: {fileID: 3700021347380424114}
+  tmpLabelValueActual: {fileID: 3700021347380424114}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -3303,7 +3319,13 @@ MonoBehaviour:
   - {fileID: 4821377688085857093}
   - {fileID: 5247809136182509016}
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &5538322892590817902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3847,7 +3869,13 @@ MonoBehaviour:
   - {fileID: 295765581506937838}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &9216564426016345432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4492,9 +4520,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 3414940105305472208}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 4051498886721154005}
   tmpLabelSub: {fileID: 8030270518564569910}
-  tmpLabelValue: {fileID: 622519034303948832}
+  tmpLabelValueActual: {fileID: 622519034303948832}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -5264,9 +5294,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 1201575038851663068}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 2088231775718760727}
   tmpLabelSub: {fileID: 1605855009443884497}
-  tmpLabelValue: {fileID: 4009245290508658005}
+  tmpLabelValueActual: {fileID: 4009245290508658005}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -5531,8 +5563,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 2364227682168869279}
-  buttonCollider: {fileID: 892419117635168008}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &5709980083468796778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5880,7 +5914,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.042666793}
+  m_AnchoredPosition: {x: 0.30649287, y: 0.018133044}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4054580177927262074
@@ -6051,7 +6085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0428}
+  m_AnchoredPosition: {x: -0.15250012, y: 0.017999887}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6594554177242740592
@@ -6222,7 +6256,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.042649984}
+  m_AnchoredPosition: {x: 0.13555005, y: 0.018150091}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6542740284984869791
@@ -6545,8 +6579,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 2803991281911105019}
-  buttonCollider: {fileID: 6174351502966451649}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &2919555825544421562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6847,8 +6883,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 2913153739174772576}
-  buttonCollider: {fileID: 4366554015852148944}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &555555657889196147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7061,8 +7099,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 2992885281763161655}
-  buttonCollider: {fileID: 8992689764671976250}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &8567572908719375983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7802,7 +7842,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.04279983}
+  m_AnchoredPosition: {x: 0.020950101, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8571330489068574140
@@ -8044,9 +8084,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 4383033298294026299}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 7115907816394231776}
   tmpLabelSub: {fileID: 4237281507885875465}
-  tmpLabelValue: {fileID: 8635654068833909272}
+  tmpLabelValueActual: {fileID: 8635654068833909272}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -8466,7 +8508,13 @@ MonoBehaviour:
   - {fileID: 1017635792868212326}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &7355589180571432582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8585,7 +8633,13 @@ MonoBehaviour:
   - {fileID: 7789615795989460298}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &6835191174309728321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9424,7 +9478,13 @@ MonoBehaviour:
   - {fileID: 4291416128598942717}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &5954230579867577284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9722,9 +9782,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 2439588524119497070}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 2285824407458403001}
   tmpLabelSub: {fileID: 6728990981259749202}
-  tmpLabelValue: {fileID: 788193358932800958}
+  tmpLabelValueActual: {fileID: 788193358932800958}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -10232,7 +10294,13 @@ MonoBehaviour:
   - {fileID: 7098889321190681840}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &6214973672435863777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10908,8 +10976,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 4572560571518445898}
-  buttonCollider: {fileID: 1174237961913514134}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &7320236309129741967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10965,8 +11035,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 5786227007865423616}
+  - {fileID: 7694385641147673863}
   - {fileID: 1084351279877258102}
+  - {fileID: 5786227007865423616}
   m_Father: {fileID: 469766626172352910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4858961817433226424
@@ -11103,7 +11174,13 @@ MonoBehaviour:
   - {fileID: 1169047634090506195}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &5800201438066357675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11326,8 +11403,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.006536126, z: 0.1427033}
   m_LocalScale: {x: 0.05, y: 0.049999993, z: 0.049999993}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7694385641147673863}
+  m_Children: []
   m_Father: {fileID: 5159206245699078258}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6771275559980909154
@@ -11414,7 +11490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.042649984}
+  m_AnchoredPosition: {x: 0.24930005, y: 0.018150091}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4759721771738437660
@@ -11690,7 +11766,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0428}
+  m_AnchoredPosition: {x: -0.09535003, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2122181663732397563
@@ -12433,8 +12509,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 5341195919517707861}
-  buttonCollider: {fileID: 8785569285321134911}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &4948436603173481630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13115,10 +13193,15 @@ MonoBehaviour:
   defaultAngle: 20
   minAngle: 0
   maxAngle: 45
+  invertAngle: 1
+  rotationAxis: 0
+  forwardVector: {x: 0, y: 0, z: 1}
   debugLog: {fileID: 0}
   accessControl: {fileID: 0}
   hingeTransform: {fileID: 5786227007865423616}
+  hingeBase: {fileID: 5159206245699078258}
   pickupTrigger: {fileID: 5248736781914647417}
+  pickupReset: {fileID: 939418725858253001}
 --- !u!114 &3789314003594104476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13250,9 +13333,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 6194267600700568322}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 6024339246498362649}
   tmpLabelSub: {fileID: 2913239251864923235}
-  tmpLabelValue: {fileID: 4696178437366297298}
+  tmpLabelValueActual: {fileID: 4696178437366297298}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -13423,7 +13508,13 @@ MonoBehaviour:
   - {fileID: 4123913332883994323}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &4804832909113952913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13762,9 +13853,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 7564899339414236852}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 2757287994346272664}
   tmpLabelSub: {fileID: 7052612724708867808}
-  tmpLabelValue: {fileID: 3840467551117617965}
+  tmpLabelValueActual: {fileID: 3840467551117617965}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -14029,8 +14122,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 5817597782086954791}
-  buttonCollider: {fileID: 5551005660643969910}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &7358843664372808860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14414,8 +14509,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 6010056811885886947}
-  buttonCollider: {fileID: 1691806888651341724}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &4386293936937211072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14628,8 +14725,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 6134709746494723021}
-  buttonCollider: {fileID: 7867034207416399219}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &8087086383382619246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14844,9 +14943,11 @@ MonoBehaviour:
   handleRenderer: {fileID: 3075013120802440443}
   leftLimiter: {fileID: 1686602442466038190}
   rightLimiter: {fileID: 1159416682268845638}
+  axis: 2
   tmpLabelMain: {fileID: 503960934213372797}
   tmpLabelSub: {fileID: 2527422628673672718}
-  tmpLabelValue: {fileID: 2923915547948464622}
+  tmpLabelValueActual: {fileID: 2923915547948464622}
+  tmpLabelValueTarget: {fileID: 0}
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
@@ -15042,7 +15143,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.04279983}
+  m_AnchoredPosition: {x: -0.038049914, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6702489042847828947
@@ -15292,12 +15393,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6332702445345178105}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.8191521, y: -0, z: -0, w: 0.57357645}
-  m_LocalPosition: {x: -0.6799984, y: 3.5501387, z: -3.0632029}
-  m_LocalScale: {x: 14, y: 0.3, z: 0.2}
+  m_LocalRotation: {x: -0.1736482, y: -0, z: -0, w: 0.9848078}
+  m_LocalPosition: {x: -0.03399992, y: 0.14662397, z: 0.32021022}
+  m_LocalScale: {x: 0.7, y: 0.015000006, z: 0.010000003}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1084351279877258102}
+  m_Father: {fileID: 5159206245699078258}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2959696414140945463
 MeshFilter:
@@ -15338,7 +15439,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 0.0000001
   m_Drag: 10
-  m_AngularDrag: 0.05
+  m_AngularDrag: 10
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -15353,7 +15454,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 98
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &6012889859613384868
 MonoBehaviour:
@@ -15386,7 +15487,7 @@ MonoBehaviour:
   ThrowVelocityBoostScale: 0
   currentlyHeldBy: {fileID: 0}
   pickupable: 1
-  proximity: 0.02
+  proximity: 0.05
   version: 1
 --- !u!114 &5248736781914647417
 MonoBehaviour:
@@ -15708,8 +15809,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 6481416634505350738}
-  buttonCollider: {fileID: 1474760296202738596}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &7187360781795384292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16342,8 +16445,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 6959819828376390978}
-  buttonCollider: {fileID: 8739026765267764567}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &3011306807981516741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17935,8 +18040,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 7845902724345624360}
-  buttonCollider: {fileID: 202313472098597847}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &2539852945076904376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18387,7 +18494,13 @@ MonoBehaviour:
   - {fileID: 2758846383476451505}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &9019245835473352126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18506,7 +18619,13 @@ MonoBehaviour:
   - {fileID: 3521961688061001939}
   toggles: []
   accessControl: {fileID: 0}
+  tmpLabel: {fileID: 0}
+  label: Reset
   debugLog: {fileID: 0}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &6418485979431903179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18567,7 +18686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.04266703}
+  m_AnchoredPosition: {x: 0.36553288, y: 0.018133044}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6985433473749891915
@@ -19688,8 +19807,10 @@ MonoBehaviour:
   externalBool: 
   externalEvent: 
   debugLog: {fileID: 0}
-  button: {fileID: 8504860469264323963}
-  buttonCollider: {fileID: 3917743331473144313}
+  state0: {fileID: 0}
+  state1: {fileID: 0}
+  state2: {fileID: 0}
+  state3: {fileID: 0}
 --- !u!114 &1754073907736381806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20176,7 +20297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.042799592}
+  m_AnchoredPosition: {x: 0.07809998, y: 0.018000126}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8737709453560705343

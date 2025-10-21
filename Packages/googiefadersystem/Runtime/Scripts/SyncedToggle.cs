@@ -5,18 +5,20 @@ using VRC.SDKBase;
 using VRC.Udon;
 using Texel;
 using TMPro;
+using UnityEngine.TextCore.Text;
 using VRC;
+using VRC.Core;
 
 namespace GoogieFaderSystem
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class SyncedToggle : ACLBase
     {
+        [SerializeField] private GameObject[] targetsOn = { null };
+        [SerializeField] private GameObject[] targetsOff = { };
 
-        [SerializeField] private GameObject[] targetsOn = { null, null };
-        [SerializeField] private GameObject[] targetsOff = { null };
-
-        [Tooltip("The button will initialize into this value, toggle this for elements that should be enabled by default"),
+        [Tooltip(
+             "The button will initialize into this value, toggle this for elements that should be enabled by default"),
          SerializeField]
         private bool defaultValue = false;
 
@@ -24,25 +26,28 @@ namespace GoogieFaderSystem
          SerializeField]
         private bool offIfNotUsable = false;
 
-        [SerializeField] private string label;
-
         [Header("UI")] // header
         [SerializeField]
-        public TextMeshPro tmpLabel;
+        private string label;
+
+        [SerializeField] private TextMeshPro tmpLabel;
 
         [Header("Access Control")] // header
-        [SerializeField] private bool useACL = true;
+        [SerializeField]
+        private bool useACL = true;
+
         protected override bool UseACL => useACL;
-        
+
         [Tooltip("ACL used to check who can use the toggle"),
          SerializeField]
         private AccessControl accessControl;
+
         protected override AccessControl AccessControl
         {
             get => accessControl;
             set => accessControl = value;
         }
-        
+
         [Header("External")] // header
         [SerializeField]
         private UdonBehaviour externalBehaviour;
@@ -51,32 +56,40 @@ namespace GoogieFaderSystem
         [SerializeField] private string externalEvent = "";
 
         [Header("Debug")] // header
-        [SerializeField] private DebugLog debugLog;
+        [SerializeField]
+        private DebugLog debugLog;
 
         protected override DebugLog DebugLog
         {
             get => debugLog;
             set => debugLog = value;
         }
+
         protected override string LogPrefix => nameof(SyncedToggle);
 
-        [Header("Backend")] // header
-        [Tooltip(
-            "This GameObject gets turned off if `Off If Not Usable` is TRUE.\n\n!!MAKE SURE THERE ARE NO SCRIPTS ON THIS OBJECT!!\nscripts do not run if they get turned off.")]
-        [SerializeField]
-        private GameObject button;
+        [Header("Internals")] // header
+        // [Tooltip(
+        //     "This GameObject gets turned off if `Off If Not Usable` is TRUE.\n\n!!MAKE SURE THERE ARE NO SCRIPTS ON THIS OBJECT!!\nscripts do not run if they get turned off.")]
+        // [SerializeField]
+        // private GameObject button;
 
-        [Tooltip(
-            "This Collider gets turned off if `Off If Not Usable` is TRUE.\nIf you using UI buttons, leave this empty.")]
+        // [Tooltip(
+        //     "This Collider gets turned off if `Off If Not Usable` is TRUE.\nIf you using UI buttons, leave this empty.")]
+        // [SerializeField]
+        // private Collider buttonCollider;
         [SerializeField]
-        private Collider buttonCollider;
+        private Transform state0;
+
+        [SerializeField] private Transform state1;
+        [SerializeField] private Transform state2;
+        [SerializeField] private Transform state3;
 
         [UdonSynced] private bool _isOn = false;
 
-        public string key => $"{name}_{this.GetInstanceID()}";
-        public bool state => _isOn;
+        public string Key => $"{name}_{this.GetInstanceID()}";
+        public bool ButtonState => _isOn;
 
-        
+
         public const int EVENT_UPdATE = 0;
         public const int EVENT_COUNT = 1;
 
@@ -89,19 +102,20 @@ namespace GoogieFaderSystem
 
         protected override void _Init()
         {
-            if (button == null)
-            {
-                button = gameObject;
-            }
-
-            if (buttonCollider == null)
-            {
-                buttonCollider = button.GetComponent<Collider>();
-            }
+            // if (button == null)
+            // {
+            //     button = gameObject;
+            // }
+            //
+            // if (buttonCollider == null)
+            // {
+            //     buttonCollider = button.GetComponent<Collider>();
+            // }
 
             DisableInteractive = true;
-            if (button != null) button.SetActive(!offIfNotUsable);
-            if (buttonCollider != null) buttonCollider.enabled = !offIfNotUsable;
+
+            // if (button != null) button.SetActive(!offIfNotUsable);
+            // if (buttonCollider != null) buttonCollider.enabled = !offIfNotUsable;
 
 
             if (!string.IsNullOrEmpty(label))
@@ -119,32 +133,8 @@ namespace GoogieFaderSystem
 
         protected override void AccessChanged()
         {
-            if (isAuthorized)
-            {
-                DisableInteractive = false;
-                if (button)
-                {
-                    button.SetActive(true);
-                }
-
-                if (buttonCollider != null)
-                {
-                    buttonCollider.enabled = true;
-                }
-            }
-            else
-            {
-                DisableInteractive = true;
-                if (button)
-                {
-                    button.SetActive(!offIfNotUsable);
-                }
-
-                if (buttonCollider != null)
-                {
-                    buttonCollider.enabled = (!offIfNotUsable);
-                }
-            }
+            DisableInteractive = !isAuthorized;
+            _UpdateState();
         }
 
         public void SetState(bool newValue)
@@ -156,6 +146,7 @@ namespace GoogieFaderSystem
             }
 
             _isOn = newValue;
+
             RequestSerialization();
             OnDeserialization();
         }
@@ -174,6 +165,11 @@ namespace GoogieFaderSystem
 
         public override void Interact()
         {
+            _Interact();
+        }
+
+        public void _Interact()
+        {
             if (useACL && !isAuthorized) return;
 
             if (!Networking.IsOwner(gameObject))
@@ -188,6 +184,11 @@ namespace GoogieFaderSystem
 
         private void _UpdateState()
         {
+            Log($"_UpdateState {_isOn}");
+            if (state0) state0.localScale = _isOn ? Vector3.zero : Vector3.one;
+            if (state1) state1.localScale = _isOn ? Vector3.one : Vector3.zero;
+            if (state2) state2.localScale = Vector3.zero;
+            if (state3) state3.localScale = Vector3.zero;
             foreach (var obj in targetsOn)
             {
                 if (obj)
@@ -217,6 +218,23 @@ namespace GoogieFaderSystem
                     externalBehaviour.SendCustomEvent(externalEvent);
                 }
             }
+
+            if (isAuthorized)
+            {
+                SetState(_isOn ? 3 : 2);
+            }
+            else
+            {
+                SetState(_isOn ? 1 : 0);
+            }
+        }
+
+        private void SetState(int state)
+        {
+            if (state0) state0.localScale = state == 0 ? Vector3.one : Vector3.zero;
+            if (state1) state1.localScale = state == 1 ? Vector3.one : Vector3.zero;
+            if (state2) state2.localScale = state == 2 ? Vector3.one : Vector3.zero;
+            if (state3) state3.localScale = state == 3 ? Vector3.one : Vector3.zero;
         }
 
         public override void OnDeserialization()
@@ -227,7 +245,10 @@ namespace GoogieFaderSystem
         [NonSerialized] private string prevLabel;
         [NonSerialized] private TextMeshPro prevTMPLabel;
 
+        // [Header("Editor Only")] // header
+        // [SerializeField] private TMP_FontAsset fontAsset;
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
+
         private void OnValidate()
         {
             if (Application.isPlaying) return;
@@ -243,15 +264,15 @@ namespace GoogieFaderSystem
                 ApplyValues();
             }
 
-            if (button == null)
-            {
-                button = gameObject;
-            }
-
-            if (buttonCollider == null)
-            {
-                buttonCollider = button.GetComponent<Collider>();
-            }
+            // if (button == null)
+            // {
+            //     button = gameObject;
+            // }
+            //
+            // if (buttonCollider == null)
+            // {
+            //     buttonCollider = button.GetComponent<Collider>();
+            // }
         }
 
         [ContextMenu("Apply Values")]
@@ -272,18 +293,9 @@ namespace GoogieFaderSystem
                 }
             }
 
-            // if (pickup != null)
+            // if (tmpLabel && fontAsset)
             // {
-            //     pickup.InteractionText = labelMain + " - " + labelSub;
-            //     if (faderHandle)
-            //     {
-            //         pickup.transform.localPosition = faderHandle.transform.localPosition;
-            //     }
-            //     else
-            //     {
-            //         pickup.transform.localPosition = gameObject.transform.localPosition;
-            //     }
-            //     pickup.MarkDirty();
+            //     tmpLabel.font = fontAsset;
             // }
         }
 
@@ -293,14 +305,96 @@ namespace GoogieFaderSystem
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
 
-            if (button == null)
+            // if (button == null)
+            // {
+            //     button = gameObject;
+            // }
+            //
+            // if (buttonCollider == null)
+            // {
+            //     buttonCollider = button.GetComponent<Collider>();
+            // }
+
+            if (tmpLabel == null)
             {
-                button = gameObject;
+                tmpLabel = transform.Find("Label").GetComponent<TextMeshPro>();
             }
 
-            if (buttonCollider == null)
+            if (state0 == null)
             {
-                buttonCollider = button.GetComponent<Collider>();
+                foreach (Transform child in transform)
+                {
+                    if (child.name.EndsWith("S0"))
+                    {
+                        state0 = child;
+                        state0.localScale = Vector3.one;
+                        state0.MarkDirty();
+                        break;
+                    }
+                }
+            }
+
+            if (state1 == null)
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child.name.EndsWith("S1"))
+                    {
+                        state1 = child;
+                        state1.MarkDirty();
+                        break;
+                    }
+                }
+            }
+
+            if (state2 == null)
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child.name.EndsWith("S2"))
+                    {
+                        state2 = child;
+                        state2.MarkDirty();
+                        break;
+                    }
+                }
+            }
+
+            if (state3 == null)
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child.name.EndsWith("S3"))
+                    {
+                        state3 = child;
+                        state3.MarkDirty();
+                        break;
+                    }
+                }
+            }
+
+            if (state0)
+            {
+                state0.localScale = Vector3.one;
+                state0.MarkDirty();
+            }
+
+            if (state1)
+            {
+                state1.localScale = Vector3.zero;
+                state1.MarkDirty();
+            }
+
+            if (state2)
+            {
+                state2.localScale = Vector3.zero;
+                state2.MarkDirty();
+            }
+
+            if (state3)
+            {
+                state3.localScale = Vector3.zero;
+                state3.MarkDirty();
             }
 
             this.MarkDirty();

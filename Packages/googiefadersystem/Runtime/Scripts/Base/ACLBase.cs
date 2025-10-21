@@ -49,8 +49,8 @@ namespace GoogieFaderSystem
             if (isAuthorized != oldAuth)
             {
                 Log($"setting isAuthorized to {this.isAuthorized} for {Networking.LocalPlayer.displayName}");
+                AccessChanged();
             }
-            AccessChanged();
         }
 
         protected abstract void AccessChanged();

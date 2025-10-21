@@ -146,10 +146,10 @@ namespace GoogieFaderSystem
 
             foreach (var toggle in presetController.toggles)
             {
-                var key = toggle.key;
+                var key = toggle.Key;
                 // var key = toggle.gameObject.GetInstanceID();
-                Log("Saving Toggle" + key + " = " + toggle.state);
-                _toggleValues.SetValue(key, new DataToken(toggle.state));
+                Log("Saving Toggle" + key + " = " + toggle.ButtonState);
+                _toggleValues.SetValue(key, new DataToken(toggle.ButtonState));
             }
 
             RequestSerialization();
@@ -196,7 +196,7 @@ namespace GoogieFaderSystem
 
             foreach (var toggle in presetController.toggles)
             {
-                var key = toggle.key;
+                var key = toggle.Key;
                 Log($"loading value for {key}");
 
                 if (_toggleValues.ContainsKey(key))

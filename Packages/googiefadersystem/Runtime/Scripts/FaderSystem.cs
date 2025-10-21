@@ -65,7 +65,7 @@ namespace GoogieFaderSystem
         [ContextMenu("Setup Components")]
         private void SetupComponents()
         {
-            foreach (var fader in gameObject.GetComponentsInChildren<ShaderFader>(true))
+            foreach (var fader in gameObject.GetComponentsInChildren<Fader>(true))
             {
                 fader.EditorACL = accessControl;
                 fader.EditorDebugLog = debugLogFader ?? debugLogDefault;

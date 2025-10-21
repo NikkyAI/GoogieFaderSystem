@@ -22,7 +22,7 @@ namespace GoogieFaderSystem
         private GameObject[] objects;
         // [SerializeField] private GameObject presetSlotHolder;
 
-        [SerializeField] public ShaderFader[] faders;
+        [SerializeField] public Fader[] faders;
         [SerializeField] public SyncedToggle[] toggles;
 
         [FormerlySerializedAs("debugState")] [SerializeField]
@@ -108,7 +108,7 @@ namespace GoogieFaderSystem
         private void FindAllFadersAndButtons()
         {
             faders = objects
-                .SelectMany(o => o.GetComponentsInChildren<ShaderFader>(true))
+                .SelectMany(o => o.GetComponentsInChildren<Fader>(true))
                 .Distinct()
                 .ToArray();
             toggles = objects
