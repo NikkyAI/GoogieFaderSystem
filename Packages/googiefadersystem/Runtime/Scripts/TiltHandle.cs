@@ -34,6 +34,8 @@ namespace GoogieFaderSystem
         [SerializeField] private Axis rotationAxis = Axis.X;
 
         [SerializeField] private Vector3 forwardVector = Vector3.forward;
+        
+        [SerializeField] private Axis upAxis = Axis.Y;
 
         // [SerializeField]
         // [Tooltip("divides the vertical look distance by this number")]
@@ -245,6 +247,7 @@ namespace GoogieFaderSystem
             {
                 relativePos.z = 0;
             }
+            relativePos[(int) upAxis] = Mathf.Clamp(relativePos[(int) upAxis], 0, Mathf.Infinity);
 
             // var angle = Vector3.Angle(Vector3.forward, relativePos);
             // var angle = Vector3.Angle(relativePos, forwardVector);

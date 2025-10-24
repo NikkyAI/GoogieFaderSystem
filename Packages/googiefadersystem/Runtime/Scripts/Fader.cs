@@ -37,16 +37,10 @@ namespace GoogieFaderSystem
         [Tooltip(("Value for reset")),
          SerializeField]
         private float defaultValue = 0; // Value for reset
+        private float _normalizedDefault;
 
-        [FormerlySerializedAs("valueMin"),
-         Tooltip(("minimum value")),
-         SerializeField]
-        private float minValue = 0; // Default minimum value
-
-        [FormerlySerializedAs("valueMax"),
-         Tooltip(("maximum value")),
-         SerializeField]
-        private float maxValue = 1; // Default maximum value
+        [SerializeField] private Vector2 valueRange = new Vector2(0, 1);
+        private float _minValue, _maxValue;
 
         // [SerializeField]
         // private Vector2 range = new Vector2(0, 1);
@@ -98,17 +92,6 @@ namespace GoogieFaderSystem
         private const float _desktopDampening = 20;
 
         [Header("Internals")] // header
-        [Tooltip("ACL used to check who can use the fader")]
-        [SerializeField]
-        private AccessControl accessControl;
-
-        protected override AccessControl AccessControl
-        {
-            get => accessControl;
-            set => accessControl = value;
-        }
-
-        protected override bool UseACL => true;
 
         [SerializeField] private GameObject leftHandCollider;
         [SerializeField] private GameObject rightHandCollider;
@@ -137,6 +120,18 @@ namespace GoogieFaderSystem
         [SerializeField] private string externalFloat = "";
         [SerializeField] private string externalEvent = "";
 
+        [Header("ACL")] // header
+        
+        [Tooltip("ACL used to check who can use the fader")]
+        [SerializeField]
+        private AccessControl accessControl;
+        protected override AccessControl AccessControl
+        {
+            get => accessControl;
+            set => accessControl = value;
+        }
+        protected override bool UseACL => true;
+        
         [Header("Debug")] // header
         [SerializeField]
         private DebugLog debugLog;
@@ -193,6 +188,19 @@ namespace GoogieFaderSystem
 
         protected override int EventCount => EVENT_COUNT;
 
+        //deprecated fields
+
+        [FormerlySerializedAs("minValue")]
+        [FormerlySerializedAs("valueMin"),
+         Tooltip(("minimum value")),
+         SerializeField, HideInInspector]
+        private float minValueOld = 0; // Default minimum value
+
+        [FormerlySerializedAs("maxValue")]
+        [FormerlySerializedAs("valueMax"),
+         Tooltip(("maximum value")),
+         SerializeField, HideInInspector]
+        private float maxValueOld = 1; // Default maximum value
 
         // public void _InternalUpdateDebugState()
         // {
@@ -219,6 +227,9 @@ namespace GoogieFaderSystem
 
         protected override void _Init()
         {
+            _minValue = valueRange.x;
+            _maxValue = valueRange.y;
+            _normalizedDefault = Mathf.InverseLerp(_minValue, _maxValue, defaultValue);
             _faderHandle = gameObject;
             _uid = gameObject.GetInstanceID();
             _localPlayer = Networking.LocalPlayer;
@@ -246,13 +257,22 @@ namespace GoogieFaderSystem
 
             if (tmpLabelMain)
             {
-                tmpLabelMain.text = labelMain;
+                if (tmpLabelSub == null)
+                {
+                    var text = (labelMain.Trim() + "\n" + labelSub.Trim()).Trim('\n', ' ');
+                    tmpLabelMain.text = text;
+                }
+                else
+                {
+                    tmpLabelMain.text = labelMain;
+                    tmpLabelSub.text = labelSub;
+                }
             }
 
-            if (tmpLabelSub)
-            {
-                tmpLabelSub.text = labelSub;
-            }
+            // if (tmpLabelSub)
+            // {
+            //     tmpLabelSub.text = labelSub;
+            // }
 
             if (tmpLabelValueActual)
             {
@@ -292,7 +312,7 @@ namespace GoogieFaderSystem
         {
             if (!isAuthorized) return;
 
-            float normalizedNewValue = Mathf.InverseLerp(minValue, maxValue, newValue);
+            float normalizedNewValue = Mathf.InverseLerp(_minValue, _maxValue, newValue);
             // syncedValueNormalized = newValue;
             syncedValueNormalized = normalizedNewValue;
             RequestSerialization();
@@ -418,10 +438,9 @@ namespace GoogieFaderSystem
 
             if (!valueInitialized)
             {
-                float normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
-                syncedValueNormalized = normalizedDefault;
-                smoothedCurrentNormalized = normalizedDefault;
-                smoothingTargetNormalized = normalizedDefault;
+                syncedValueNormalized = _normalizedDefault;
+                smoothedCurrentNormalized = _normalizedDefault;
+                smoothingTargetNormalized = _normalizedDefault;
                 valueInitialized = true;
             }
 
@@ -513,10 +532,7 @@ namespace GoogieFaderSystem
 
                 Transform handData = _inRightTrigger ? rightHandCollider.transform : leftHandCollider.transform;
 
-                var localHandPos =
-                    transform.parent.InverseTransformPoint(handData.position); //.worldToLocalMatrix.MultiplyVector();
-                // Log($"transform.position {localHandPos} {handData.localPosition}");
-                // var localHandPos = handData.localPosition;
+                var localHandPos = transform.parent.InverseTransformPoint(handData.position);
 
                 float handPos = localHandPos[(int)axis];
                 float clampedPos = Mathf.Clamp(handPos, _leftLimit, _rightLimit); // Clamp position within limits
@@ -555,11 +571,11 @@ namespace GoogieFaderSystem
             // Log($"OnTriggerEnter() Other: {other.name} ({other.GetInstanceID()}), Script on: {gameObject.name} ({gameObject.GetInstanceID()}), UID: {uid}");
             if (other.gameObject == leftHandCollider)
             {
-                if (_handleMat != null)
-                {
-                    _handleMat[0].EnableKeyword("_EMISSION");
-                    _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
-                }
+                // if (_handleMat != null)
+                // {
+                //     _handleMat[0].EnableKeyword("_EMISSION");
+                //     _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                // }
 
                 if (!_inLeftTrigger)
                 {
@@ -572,11 +588,11 @@ namespace GoogieFaderSystem
 
             if (other.gameObject == rightHandCollider)
             {
-                if (_handleMat != null)
-                {
-                    _handleMat[0].EnableKeyword("_EMISSION");
-                    _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
-                }
+                // if (_handleMat != null)
+                // {
+                //     _handleMat[0].EnableKeyword("_EMISSION");
+                //     _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                // }
 
                 if (!_inRightTrigger)
                 {
@@ -599,13 +615,13 @@ namespace GoogieFaderSystem
 
             if (other.gameObject.name == "leftHandCollider")
             {
-                if (_handleMat != null)
-                {
-                    // handleMat[0].EnableKeyword("_EMISSION");
-                    // handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
-                    _handleMat[0].DisableKeyword("_EMISSION");
-                    _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-                }
+                // if (_handleMat != null)
+                // {
+                //     // handleMat[0].EnableKeyword("_EMISSION");
+                //     // handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                //     _handleMat[0].DisableKeyword("_EMISSION");
+                //     _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+                // }
 
                 if (_inLeftTrigger)
                 {
@@ -618,13 +634,13 @@ namespace GoogieFaderSystem
 
             if (other.gameObject.name == "rightHandCollider")
             {
-                if (_handleMat != null)
-                {
-                    // handleMat[0].EnableKeyword("_EMISSION");
-                    // handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
-                    _handleMat[0].DisableKeyword("_EMISSION");
-                    _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-                }
+                // if (_handleMat != null)
+                // {
+                //     // handleMat[0].EnableKeyword("_EMISSION");
+                //     // handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                //     _handleMat[0].DisableKeyword("_EMISSION");
+                //     _handleMat[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+                // }
 
                 if (_inRightTrigger)
                 {
@@ -652,8 +668,8 @@ namespace GoogieFaderSystem
                 }
 
                 targetValue = Mathf.Lerp(
-                    minValue,
-                    maxValue,
+                    _minValue,
+                    _maxValue,
                     remappedTarget
                 );
 
@@ -704,8 +720,11 @@ namespace GoogieFaderSystem
             }
             else
             {
-                this.SendCustomEventDelayedFrames(nameof(SmoothValueUpdate), smoothUpdateInterval,
-                    EventTiming.LateUpdate);
+                this.SendCustomEventDelayedFrames(
+                    nameof(SmoothValueUpdate),
+                    smoothUpdateInterval,
+                    EventTiming.LateUpdate
+                );
             }
 
             _AssignValue(smoothedCurrentNormalized, true);
@@ -721,8 +740,8 @@ namespace GoogieFaderSystem
             }
 
             localValue = Mathf.Lerp(
-                minValue,
-                maxValue,
+                _minValue,
+                _maxValue,
                 remappedValue
             );
 
@@ -776,10 +795,8 @@ namespace GoogieFaderSystem
 
         private void OnDisable()
         {
-            //TODO normalize defaultValue
-            var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
-            _lastSyncedValueNormalized = normalizedDefault;
-            _UpdateTargetFloat(normalizedDefault);
+            _lastSyncedValueNormalized = _normalizedDefault;
+            _UpdateTargetFloat(_normalizedDefault);
         }
 
         private void UpdatePositionToCurrentValue()
@@ -811,27 +828,26 @@ namespace GoogieFaderSystem
             }
 
             valueInitialized = false; // forces it to skip smoothing
-            var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
-            syncedValueNormalized = normalizedDefault;
-            smoothedCurrentNormalized = normalizedDefault;
-            smoothingTargetNormalized = normalizedDefault;
-            Log($"Reset value to {defaultValue} ({normalizedDefault})");
+            syncedValueNormalized = _normalizedDefault;
+            smoothedCurrentNormalized = _normalizedDefault;
+            smoothingTargetNormalized = _normalizedDefault;
+            Log($"Reset value to {defaultValue} ({_normalizedDefault})");
 
             UpdatePositionToCurrentValue();
             RequestSerialization();
         }
 
-        /// <summary>
-        /// Normalizes the given value and evaluates it on a curve, then expands it back to the actual range.
-        /// </summary>
-        /// <param name="newValue">Float that should be evaluated.</param>
-        /// <returns>The provided float evaluated along a curve.</returns>
-        protected float EvaluateCurve(float newValue)
-        {
-            newValue = (newValue - minValue) / (maxValue - minValue);
-            newValue = sliderCurve.Evaluate(newValue);
-            return minValue + (newValue * (maxValue - minValue));
-        }
+        // /// <summary>
+        // /// Normalizes the given value and evaluates it on a curve, then expands it back to the actual range.
+        // /// </summary>
+        // /// <param name="newValue">Float that should be evaluated.</param>
+        // /// <returns>The provided float evaluated along a curve.</returns>
+        // protected float EvaluateCurve(float newValue)
+        // {
+        //     newValue = (newValue - _minValue) / (_maxValue - _minValue);
+        //     newValue = sliderCurve.Evaluate(newValue);
+        //     return _minValue + (newValue * (_maxValue - _minValue));
+        // }
 
         [NonSerialized] private string prevMain;
         [NonSerialized] private string prevSub;
@@ -841,12 +857,6 @@ namespace GoogieFaderSystem
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
         // [Header("Editor Only")] // header
         // [SerializeField] private TMP_FontAsset fontAsset;
-        public DebugLog EditorDebugLog
-        {
-            get => debugLog;
-            set => debugLog = value;
-        }
-
         public GameObject LeftHandCollider
         {
             get => leftHandCollider;
@@ -864,15 +874,29 @@ namespace GoogieFaderSystem
             if (Application.isPlaying) return;
             UnityEditor.EditorUtility.SetDirty(this);
 
+            if (minValueOld != 0 && maxValueOld != 1)
+            {
+                valueRange = new Vector2(minValueOld, maxValueOld);
+                minValueOld = 0;
+                maxValueOld = 1;
+                this.MarkDirty();
+            }
+            
             //TODO: check on localTransforms too
-            if (labelMain == prevMain && labelSub == prevSub && prevDefaultValue == defaultValue && prevMinValue == minValue && prevMaxValue == maxValue)
+            if (labelMain == prevMain && labelSub == prevSub && prevDefaultValue == defaultValue && prevMinValue == _minValue && prevMaxValue == _maxValue)
                 return; // To prevent trying to apply the theme to often, as without it every single change in the scene causes it to be applied
+
+            _minValue = valueRange.x;
+            _maxValue = valueRange.y;
+            _normalizedDefault = Mathf.InverseLerp(_minValue, _maxValue, defaultValue);
+
             ApplyValues();
+
             prevMain = labelMain;
             prevSub = labelSub;
             prevDefaultValue = defaultValue;
-            prevMinValue = minValue;
-            prevMaxValue = maxValue;
+            prevMinValue = minValueOld;
+            prevMaxValue = maxValueOld;
         }
 
         [ContextMenu("Apply Values")]
@@ -890,7 +914,40 @@ namespace GoogieFaderSystem
                 // {
                 //     tmpLabelMain.font = fontAsset;
                 // }
-                tmpLabelMain.text = labelMain;
+                if (tmpLabelSub == null)
+                {
+                    var text = (labelMain.Trim() + "\n" + labelSub.Trim()).Trim('\n', ' ');
+                    tmpLabelMain.text = text;
+                }
+                else
+                {
+                    tmpLabelMain.text = labelMain;
+                }
+                
+                if (axis == Axis.X)
+                {
+                    tmpLabelMain.transform.localPosition = new Vector3(
+                        tmpLabelMain.transform.localPosition.x,
+                        transform.localPosition.y,
+                        transform.localPosition.z
+                    );
+                }
+                else if (axis == Axis.Y)
+                {
+                    tmpLabelMain.transform.localPosition = new Vector3(
+                        transform.localPosition.x,
+                        tmpLabelMain.transform.localPosition.y,
+                        transform.localPosition.z
+                    );
+                }
+                else if (axis == Axis.Z)
+                {
+                    tmpLabelMain.transform.localPosition = new Vector3(
+                        transform.localPosition.x,
+                        transform.localPosition.y,
+                        tmpLabelMain.transform.localPosition.z
+                    );
+                }
                 tmpLabelMain.MarkDirty();
             }
 
@@ -901,6 +958,31 @@ namespace GoogieFaderSystem
                 //     tmpLabelSub.font = fontAsset;
                 // }
                 tmpLabelSub.text = labelSub;
+                
+                if (axis == Axis.X)
+                {
+                    tmpLabelSub.transform.localPosition = new Vector3(
+                        tmpLabelSub.transform.localPosition.x,
+                        transform.localPosition.y,
+                        transform.localPosition.z
+                    );
+                }
+                else if (axis == Axis.Y)
+                {
+                    tmpLabelSub.transform.localPosition = new Vector3(
+                        transform.localPosition.x,
+                        tmpLabelSub.transform.localPosition.y,
+                        transform.localPosition.z
+                    );
+                }
+                else if (axis == Axis.Z)
+                {
+                    tmpLabelSub.transform.localPosition = new Vector3(
+                        transform.localPosition.x,
+                        transform.localPosition.y,
+                        tmpLabelSub.transform.localPosition.z
+                    );
+                }
                 tmpLabelSub.MarkDirty();
             }
 
@@ -976,8 +1058,7 @@ namespace GoogieFaderSystem
             {
                 _leftLimit = leftLimiter.gameObject.transform.localPosition[(int)axis];
                 _rightLimit = rightLimiter.gameObject.transform.localPosition[(int)axis];
-                var normalizedDefault = Mathf.InverseLerp(minValue, maxValue, defaultValue);
-                syncedValueNormalized = normalizedDefault;
+                syncedValueNormalized = _normalizedDefault;
                 UpdatePositionToCurrentValue();
                 syncedValueNormalized = 0f;
             }

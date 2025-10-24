@@ -29,6 +29,8 @@ namespace GoogieFaderSystem
         [Header("UI")] // header
         [SerializeField]
         private string label;
+        [SerializeField]
+        private string label2;
 
         [SerializeField] private TextMeshPro tmpLabel;
 
@@ -120,10 +122,11 @@ namespace GoogieFaderSystem
 
             if (!string.IsNullOrEmpty(label))
             {
-                InteractionText = label;
+                var labelText = (label.Trim() + "\n" + label2.Trim()).Trim('\n', ' ');
+                InteractionText = (label.Trim() + " " + label2.Trim()).Trim('\n', ' ', '-');
                 if (tmpLabel)
                 {
-                    tmpLabel.text = label;
+                    tmpLabel.text = labelText;
                 }
             }
 
@@ -243,6 +246,7 @@ namespace GoogieFaderSystem
         }
 
         [NonSerialized] private string prevLabel;
+        [NonSerialized] private string prevLabel2;
         [NonSerialized] private TextMeshPro prevTMPLabel;
 
         // [Header("Editor Only")] // header
@@ -255,10 +259,11 @@ namespace GoogieFaderSystem
             UnityEditor.EditorUtility.SetDirty(this);
 
             //TODO: check on localTransforms too
-            if (label != prevLabel || tmpLabel != prevTMPLabel)
+            if (label != prevLabel || label2 != prevLabel2 || tmpLabel != prevTMPLabel)
             {
                 // To prevent trying to apply the theme to often, as without it every single change in the scene causes it to be applied
                 prevLabel = label;
+                prevLabel2 = label2;
                 prevTMPLabel = tmpLabel;
 
                 ApplyValues();
@@ -288,7 +293,8 @@ namespace GoogieFaderSystem
                 // this.MarkDirty();
                 if (tmpLabel != null)
                 {
-                    tmpLabel.text = label;
+                    var text = (label.Trim() + "\n" + label2.Trim()).Trim('\n', ' ');
+                    tmpLabel.text = text;
                     tmpLabel.MarkDirty();
                 }
             }

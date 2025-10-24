@@ -63,8 +63,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -99,7 +98,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 1255430029801305833}
@@ -113,7 +111,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &2462481375653513866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +285,7 @@ MonoBehaviour:
   defaultValue: 1
   offIfNotUsable: 0
   label: MAIN POWER
+  label2: 
   tmpLabel: {fileID: 3877736638937961303}
   useACL: 1
   accessControl: {fileID: 0}
@@ -1203,8 +1205,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -1239,7 +1240,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 6347905487667595236}
@@ -1253,7 +1253,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &6121913272938577153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,7 +1448,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.33147418, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.36553288, y: 0.018133044}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &1900473445513774367
@@ -1787,7 +1790,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.011837043, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.020950101, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5410516490115910097
@@ -2207,7 +2210,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.18544, y: 0.019513004}
+  m_AnchoredPosition: {x: -0.15250012, y: 0.017999887}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7782851759696107040
@@ -2808,6 +2811,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 2665205785500920695}
   useACL: 1
   accessControl: {fileID: 0}
@@ -3079,8 +3083,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -3115,7 +3118,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 1640512104743304993}
@@ -3129,7 +3131,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &2439232231969584108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3386,7 +3391,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.15897304, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.19260006, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7868612747598075550
@@ -4107,7 +4112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.10231519, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.13555005, y: 0.018150091}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7060684105278127147
@@ -4478,8 +4483,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -4514,7 +4518,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 3414940105305472208}
@@ -4528,7 +4531,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &3382998016839546114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5252,8 +5258,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -5288,7 +5293,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 1201575038851663068}
@@ -5302,7 +5306,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &4917330110326600911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5556,6 +5563,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 5356937593157639069}
   useACL: 1
   accessControl: {fileID: 0}
@@ -6572,6 +6580,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 2785314804625892519}
   useACL: 1
   accessControl: {fileID: 0}
@@ -6643,7 +6652,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.045448124, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.07809998, y: 0.018000126}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8959963471059683553
@@ -6876,6 +6885,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 8498404370276815926}
   useACL: 1
   accessControl: {fileID: 0}
@@ -7092,6 +7102,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 4439617113686441158}
   useACL: 1
   accessControl: {fileID: 0}
@@ -7671,7 +7682,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.12881988, y: 0.019512974}
+  m_AnchoredPosition: {x: -0.09535003, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7366239591662875701
@@ -8042,8 +8053,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -8078,7 +8088,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 4383033298294026299}
@@ -8092,7 +8101,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &356083809231723334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8866,7 +8878,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.18544, y: 0.01951307}
+  m_AnchoredPosition: {x: -0.15250012, y: 0.017999887}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5383644007540833952
@@ -9740,8 +9752,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -9776,7 +9787,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 2439588524119497070}
@@ -9790,7 +9800,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &5446909260638094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9982,7 +9995,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.2739421, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.30649287, y: 0.018133044}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &1495932460436802388
@@ -10736,7 +10749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.2739421, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.30649287, y: 0.018133044}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2674134706542651737
@@ -10969,6 +10982,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 7798591792550035388}
   useACL: 1
   accessControl: {fileID: 0}
@@ -12502,6 +12516,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 7991670585103612674}
   useACL: 1
   accessControl: {fileID: 0}
@@ -12573,7 +12588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.21697998, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.24930005, y: 0.018150091}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5026562920110971762
@@ -12827,7 +12842,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0118371025, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.020950101, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &827613516073441402
@@ -12998,7 +13013,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.33147418, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.36553288, y: 0.018133044}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4204711226929735206
@@ -13196,6 +13211,7 @@ MonoBehaviour:
   invertAngle: 1
   rotationAxis: 0
   forwardVector: {x: 0, y: 0, z: 1}
+  upAxis: 1
   debugLog: {fileID: 0}
   accessControl: {fileID: 0}
   hingeTransform: {fileID: 5786227007865423616}
@@ -13291,8 +13307,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -13327,7 +13342,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 6194267600700568322}
@@ -13341,7 +13355,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &2445496613107469990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13811,8 +13828,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -13847,7 +13863,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 7564899339414236852}
@@ -13861,7 +13876,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &1728155367233635822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14115,6 +14133,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 4890354957409971458}
   useACL: 1
   accessControl: {fileID: 0}
@@ -14502,6 +14521,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 4233127777701505559}
   useACL: 1
   accessControl: {fileID: 0}
@@ -14718,6 +14738,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 3785519705299415290}
   useACL: 1
   accessControl: {fileID: 0}
@@ -14901,8 +14922,7 @@ MonoBehaviour:
   - {fileID: 0}
   materialPropertyId: _ReplaceMe
   defaultValue: 0
-  minValue: 0
-  maxValue: 1
+  valueRange: {x: 0, y: 1}
   enableValueSmoothing: 0
   smoothUpdateInterval: 5
   smoothingRate: 0.25
@@ -14937,7 +14957,6 @@ MonoBehaviour:
   labelSub: SUB
   assignVectorComponent: 0
   vectorIndex: 0
-  accessControl: {fileID: 0}
   leftHandCollider: {fileID: 0}
   rightHandCollider: {fileID: 0}
   handleRenderer: {fileID: 3075013120802440443}
@@ -14951,7 +14970,10 @@ MonoBehaviour:
   externalBehaviour: {fileID: 0}
   externalFloat: 
   externalEvent: 
+  accessControl: {fileID: 0}
   debugLog: {fileID: 0}
+  minValueOld: 0
+  maxValueOld: 1
 --- !u!114 &4335163726144102150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15802,6 +15824,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 6201252922778957015}
   useACL: 1
   accessControl: {fileID: 0}
@@ -16205,7 +16228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.07105988, y: 0.01951307}
+  m_AnchoredPosition: {x: -0.038049914, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7376936677204507003
@@ -16438,6 +16461,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 390037721542250009}
   useACL: 1
   accessControl: {fileID: 0}
@@ -16509,7 +16533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.15897322, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.19260006, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5542382207983238366
@@ -17463,7 +17487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.045448065, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.07809998, y: 0.018000126}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5038749232869059702
@@ -17800,7 +17824,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.12881994, y: 0.01951307}
+  m_AnchoredPosition: {x: -0.09535003, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3375530011785102604
@@ -18033,6 +18057,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 1089169161970942235}
   useACL: 1
   accessControl: {fileID: 0}
@@ -19355,7 +19380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.21697998, y: 0.019512974}
+  m_AnchoredPosition: {x: 0.24930005, y: 0.018150091}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4588827545096032040
@@ -19526,7 +19551,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.10231489, y: 0.01951307}
+  m_AnchoredPosition: {x: 0.13555005, y: 0.018150091}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6235375402785188399
@@ -19800,6 +19825,7 @@ MonoBehaviour:
   defaultValue: 0
   offIfNotUsable: 0
   label: LABEL
+  label2: 
   tmpLabel: {fileID: 1478291034878357004}
   useACL: 1
   accessControl: {fileID: 0}
@@ -20805,7 +20831,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.07105994, y: 0.019512974}
+  m_AnchoredPosition: {x: -0.038049914, y: 0.018000007}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &229199771671726332
