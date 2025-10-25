@@ -236,7 +236,9 @@ namespace GoogieFaderSystem
             _isDesktop = !_localPlayer.IsUserInVR();
             _leftLimit = leftLimiter.gameObject.transform.localPosition[(int)axis];
             _rightLimit = rightLimiter.gameObject.transform.localPosition[(int)axis];
-
+            
+            smoothedCurrentNormalized = _normalizedDefault;
+            
             Log($"limits: {_leftLimit} .. {_rightLimit}");
             if (handleRenderer == null)
             {
@@ -679,7 +681,13 @@ namespace GoogieFaderSystem
                 }
             }
 
-            if (enableValueSmoothing && valueInitialized)
+            if (false && !valueInitialized)
+            {
+               // smoothingTargetNormalized = _normalizedDefault;
+                smoothedCurrentNormalized = _normalizedDefault;
+                valueInitialized = true;
+            }
+            if (enableValueSmoothing)
             {
                 smoothingTargetNormalized = normalizedValue;
 
@@ -691,11 +699,9 @@ namespace GoogieFaderSystem
                     SmoothValueUpdate();
                 }
             }
-            else
+            else if (valueInitialized)
             {
                 _AssignValue(normalizedValue, false);
-
-                valueInitialized = true;
             }
         }
 

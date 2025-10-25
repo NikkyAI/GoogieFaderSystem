@@ -944,6 +944,11 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2101223003886210199, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
+      propertyPath: m_TagString
+      value: EditorOnly
+      objectReference: {fileID: 0}
     - target: {fileID: 2120136018332565929, guid: 2416a19f6650d954d9c1a39c3523127e,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -998,6 +1003,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2253151413527046447, guid: 2416a19f6650d954d9c1a39c3523127e,
         type: 3}
+    - target: {fileID: 2297455045415163559, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2297455045415163559, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
+      propertyPath: m_TagString
+      value: EditorOnly
+      objectReference: {fileID: 0}
     - target: {fileID: 2392260138981806596, guid: 2416a19f6650d954d9c1a39c3523127e,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -2059,6 +2074,16 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6400110190346898605, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400110190346898605, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
+      propertyPath: m_TagString
+      value: EditorOnly
+      objectReference: {fileID: 0}
     - target: {fileID: 6400405614741278952, guid: 2416a19f6650d954d9c1a39c3523127e,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -2456,6 +2481,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8062552125798750145, guid: 2416a19f6650d954d9c1a39c3523127e,
         type: 3}
+      propertyPath: accessControl
+      value: 
+      objectReference: {fileID: 1343501775}
+    - target: {fileID: 8062552125798750145, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8062552125798750145, guid: 2416a19f6650d954d9c1a39c3523127e,
@@ -2520,6 +2550,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8530233009071132658, guid: 2416a19f6650d954d9c1a39c3523127e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8546394652263668774, guid: 2416a19f6650d954d9c1a39c3523127e,
         type: 3}
@@ -3043,6 +3078,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Post Proccessing Layers (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 114661664536566204, guid: a17f4ac853dd90b4eba8269581869452,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8944844258447150475, guid: a17f4ac853dd90b4eba8269581869452,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3380,6 +3420,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shader FX
+      objectReference: {fileID: 0}
+    - target: {fileID: 8067326938688748976, guid: b90eec4503d8c054da0c20ead1812026,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5286,11 +5331,23 @@ MonoBehaviour:
   useAssignedLayers: 0
   DynamicPrefabs: []
   DynamicMaterials:
-  - {fileID: 2100000, guid: 9ad45fa33faedc54588ce36080d6d404, type: 2}
-  - {fileID: 2100000, guid: 0ebd013569d67f445aeb94ee03213e7f, type: 2}
+  - {fileID: 2180264, guid: 9e7c7028d4d809640a97c35bd5dd84a8, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: bc89164cc19d19f47b7eb03dce4b5b10, type: 2}
   - {fileID: 2100000, guid: 377a16708b1df574f9d09ae5ca24c62c, type: 2}
   - {fileID: 2100000, guid: 0425faf9e5dcb8f4d93afb96a3442830, type: 2}
+  - {fileID: 2100000, guid: 0ebd013569d67f445aeb94ee03213e7f, type: 2}
+  - {fileID: 2100000, guid: 2f0292f835baac047b540979e47b2159, type: 2}
+  - {fileID: 2100000, guid: 945495918e715b14fbd6bbf72cbf5845, type: 2}
+  - {fileID: 2100000, guid: a0f9fef1c72c6fb44a66034baf0258a0, type: 2}
+  - {fileID: 2100000, guid: 3862020d521b6104faaa19f894b89e3b, type: 2}
+  - {fileID: 2100000, guid: 82ca584aca3a2524992a74fdcea5ffa3, type: 2}
+  - {fileID: 2100000, guid: cfa44b09647b84c4fbeb15bf03824897, type: 2}
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 2100000, guid: 2eb6ef90129e116468ff99616c56ec93, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 21e2a56059af16b4ca13e181123307ee, type: 2}
+  - {fileID: 2100000, guid: 9ad45fa33faedc54588ce36080d6d404, type: 2}
   LightMapsNear: []
   LightMapsFar: []
   LightMode: 0
@@ -5871,10 +5928,6 @@ MonoBehaviour:
     ID: 167
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
-  - gameObject: {fileID: 0}
-    ID: 168
-    SerializedTypeNames:
-    - VRC.Udon.UdonBehaviour
   - gameObject: {fileID: 1386432254}
     ID: 169
     SerializedTypeNames:
@@ -6115,6 +6168,10 @@ MonoBehaviour:
     - VRC.Udon.UdonBehaviour
   - gameObject: {fileID: 1404250680}
     ID: 232
+    SerializedTypeNames:
+    - VRC.Udon.UdonBehaviour
+  - gameObject: {fileID: 8804731081363761090}
+    ID: 233
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
   portraitCameraPositionOffset: {x: 0, y: 0, z: 0}
@@ -7561,6 +7618,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: bfa1a668fa142db4eab080f0f47d72b8, type: 3}
+--- !u!1 &8804731081363761090 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7046871962356507565, guid: bfa1a668fa142db4eab080f0f47d72b8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8804731081363761089}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

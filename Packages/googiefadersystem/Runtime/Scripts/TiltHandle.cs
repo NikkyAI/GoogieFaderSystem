@@ -188,7 +188,12 @@ namespace GoogieFaderSystem
             {
                 _lastValue = syncedValue;
                 UpdateHingeTilt();
+                if (!isHeld)
+                {
+                    UpdatePickupPosition();
+                }
             }
+            
         }
 
         public void _OnPickup()
@@ -217,13 +222,15 @@ namespace GoogieFaderSystem
             {
                 Networking.SetOwner(_localPlayer, gameObject);
             }
+            RequestSerialization();
+            OnDeserialization();
 
-            SendCustomNetworkEvent(NetworkEventTarget.All, nameof(ResetPosition));
+            Log("handle released, resetting position");
+            SendCustomNetworkEvent(NetworkEventTarget.All, nameof(UpdatePickupPosition));
         }
 
-        public void ResetPosition()
+        public void UpdatePickupPosition()
         {
-            Log("handle released, resetting position");
             pickupRigidBody.angularVelocity = Vector3.zero;
             pickupRigidBody.velocity = Vector3.zero;
             pickup.transform.SetPositionAndRotation(pickupReset.position, pickupReset.rotation);
@@ -265,58 +272,6 @@ namespace GoogieFaderSystem
                 this.SendCustomEventDelayedFrames(nameof(FollowPickup), 5);
             }
         }
-
-        // public override void Interact()
-        // {
-        //     if (!isAuthorized)
-        //     {
-        //         return;
-        //     }
-        //
-        //
-        //     if (!_localPlayer.IsOwner(gameObject))
-        //     {
-        //         Networking.SetOwner(_localPlayer, gameObject);
-        //     }
-        //
-        //     Log("Interact");
-        //     isHeld = true;
-        // }
-
-        // public override void InputGrab(bool value, UdonInputEventArgs args)
-        // {
-        //     if (!isAuthorized)
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (isHeld && !value)
-        //     {
-        //         Log($"InputGrab {value} {args.handType}");
-        //         isHeld = false;
-        //     }
-        // }
-
-        // public override void InputLookVertical(float value, UdonInputEventArgs args)
-        // {
-        //     if (!isAuthorized)
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (!isHeld)
-        //     {
-        //         return;
-        //     }
-        //
-        //     Log($"InputLookVertical {value} {args.handType}");
-        //
-        //     var offset = (maxAngle - minAngle) * value / desktopDampening;
-        //
-        //     syncedValue = Mathf.Clamp(syncedValue + offset, minAngle, maxAngle);
-        //     RequestSerialization();
-        //     OnDeserialization();
-        // }
 
         private void UpdateHingeTilt()
         {
@@ -434,7 +389,7 @@ namespace GoogieFaderSystem
             {
                 pickupReset = transform;
             }
-            ResetPosition();
+            UpdatePickupPosition();
             this.MarkDirty();
             hingeTransform.transform.MarkDirty();
         }
