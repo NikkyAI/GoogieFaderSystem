@@ -25,13 +25,15 @@
       "dependencies": {}
     },
     "com.texelsaur.common": {
-      "version": "1.6.1",
-      "dependencies": {}
+      "version": "1.7.1",
+      "dependencies": {
+        "com.vrchat.worlds": "^3.8.0"
+      }
     },
     "com.texelsaur.access": {
-      "version": "1.2.3",
+      "version": "1.2.4",
       "dependencies": {
-        "com.texelsaur.common": "^1.4.0"
+        "com.texelsaur.common": "^1.7.1"
       }
     },
     "com.vrchat.worlds": {

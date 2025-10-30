@@ -5,7 +5,7 @@
   "description": "A fader system for use in VRChat to smoothly adjust screen space shaders such as Mochie or June in VR or desktop mode.",
   "gitDependencies": {},
   "vpmDependencies": {
-    "com.texelsaur.access": "1.2.3",
+    "com.texelsaur.access": "1.2.4",
     "com.texelsaur.misc": "1.0.5"
   },
   "author": {

@@ -37,6 +37,7 @@ namespace GoogieFaderSystem
         [Tooltip(("Value for reset")),
          SerializeField]
         private float defaultValue = 0; // Value for reset
+
         private float _normalizedDefault;
 
         [SerializeField] private Vector2 valueRange = new Vector2(0, 1);
@@ -46,7 +47,7 @@ namespace GoogieFaderSystem
         // private Vector2 range = new Vector2(0, 1);
 
         [Header("Value Smoothing")] // header
-        [Tooltip(("smoothes out value updating, but can lower frames")),
+        [Tooltip("smoothes out value updates over time, may impact CPU frametimes"),
          SerializeField]
         private bool enableValueSmoothing = false;
 
@@ -92,8 +93,9 @@ namespace GoogieFaderSystem
         private const float _desktopDampening = 20;
 
         [Header("Internals")] // header
+        [SerializeField]
+        private GameObject leftHandCollider;
 
-        [SerializeField] private GameObject leftHandCollider;
         [SerializeField] private GameObject rightHandCollider;
 
         [SerializeField] private MeshRenderer handleRenderer;
@@ -121,17 +123,18 @@ namespace GoogieFaderSystem
         [SerializeField] private string externalEvent = "";
 
         [Header("ACL")] // header
-        
         [Tooltip("ACL used to check who can use the fader")]
         [SerializeField]
         private AccessControl accessControl;
+
         protected override AccessControl AccessControl
         {
             get => accessControl;
             set => accessControl = value;
         }
+
         protected override bool UseACL => true;
-        
+
         [Header("Debug")] // header
         [SerializeField]
         private DebugLog debugLog;
@@ -236,9 +239,10 @@ namespace GoogieFaderSystem
             _isDesktop = !_localPlayer.IsUserInVR();
             _leftLimit = leftLimiter.gameObject.transform.localPosition[(int)axis];
             _rightLimit = rightLimiter.gameObject.transform.localPosition[(int)axis];
-            
+
             smoothedCurrentNormalized = _normalizedDefault;
-            
+            enableValueSmoothing = enableValueSmoothing && smoothUpdateInterval > 0;
+
             Log($"limits: {_leftLimit} .. {_rightLimit}");
             if (handleRenderer == null)
             {
@@ -359,7 +363,8 @@ namespace GoogieFaderSystem
                 }
                 else
                 {
-                    tmpLabelValueTarget.enabled = (_leftGrabbed && _inLeftTrigger) || (_rightGrabbed && _inRightTrigger);
+                    tmpLabelValueTarget.enabled =
+                        (_leftGrabbed && _inLeftTrigger) || (_rightGrabbed && _inRightTrigger);
                 }
 
                 if (!wasEnabled && tmpLabelValueTarget.enabled)
@@ -367,7 +372,6 @@ namespace GoogieFaderSystem
                     // var targetValue = Mathf.Lerp(minValue, maxValue, smoothingTargetNormalized);
                     tmpLabelValueTarget.text = targetValue.ToString(valueDisplayFormat);
                 }
-                
             }
         }
 
@@ -681,27 +685,31 @@ namespace GoogieFaderSystem
                 }
             }
 
-            if (false && !valueInitialized)
+            // immediate update
+            if (!enableValueSmoothing)
             {
-               // smoothingTargetNormalized = _normalizedDefault;
+                _AssignValue(normalizedValue, false);
+                return;
+            }
+
+            // when smoothing
+            if (!valueInitialized)
+            {
+                // smoothingTargetNormalized = _normalizedDefault;
                 smoothedCurrentNormalized = _normalizedDefault;
                 valueInitialized = true;
             }
-            if (enableValueSmoothing)
+            else
             {
                 smoothingTargetNormalized = normalizedValue;
-
-                if (!isSmoothing)
-                {
-                    // NOTE epsilon is now a const because value is always normalized
-                    // epsilon = (maxValue - minValue) / 100;
-                    isSmoothing = true;
-                    SmoothValueUpdate();
-                }
             }
-            else if (valueInitialized)
+
+            if (!isSmoothing)
             {
-                _AssignValue(normalizedValue, false);
+                // NOTE epsilon is now a const because value is always normalized
+                // epsilon = (maxValue - minValue) / 100;
+                isSmoothing = true;
+                SmoothValueUpdate();
             }
         }
 
@@ -728,8 +736,7 @@ namespace GoogieFaderSystem
             {
                 this.SendCustomEventDelayedFrames(
                     nameof(SmoothValueUpdate),
-                    smoothUpdateInterval,
-                    EventTiming.LateUpdate
+                    smoothUpdateInterval
                 );
             }
 
@@ -887,9 +894,10 @@ namespace GoogieFaderSystem
                 maxValueOld = 1;
                 this.MarkDirty();
             }
-            
+
             //TODO: check on localTransforms too
-            if (labelMain == prevMain && labelSub == prevSub && prevDefaultValue == defaultValue && prevMinValue == _minValue && prevMaxValue == _maxValue)
+            if (labelMain == prevMain && labelSub == prevSub && prevDefaultValue == defaultValue &&
+                prevMinValue == _minValue && prevMaxValue == _maxValue)
                 return; // To prevent trying to apply the theme to often, as without it every single change in the scene causes it to be applied
 
             _minValue = valueRange.x;
@@ -929,7 +937,7 @@ namespace GoogieFaderSystem
                 {
                     tmpLabelMain.text = labelMain;
                 }
-                
+
                 if (axis == Axis.X)
                 {
                     tmpLabelMain.transform.localPosition = new Vector3(
@@ -954,6 +962,7 @@ namespace GoogieFaderSystem
                         tmpLabelMain.transform.localPosition.z
                     );
                 }
+
                 tmpLabelMain.MarkDirty();
             }
 
@@ -964,7 +973,7 @@ namespace GoogieFaderSystem
                 //     tmpLabelSub.font = fontAsset;
                 // }
                 tmpLabelSub.text = labelSub;
-                
+
                 if (axis == Axis.X)
                 {
                     tmpLabelSub.transform.localPosition = new Vector3(
@@ -989,6 +998,7 @@ namespace GoogieFaderSystem
                         tmpLabelSub.transform.localPosition.z
                     );
                 }
+
                 tmpLabelSub.MarkDirty();
             }
 
